@@ -1,0 +1,1092 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  min-height: 100%;
+}
+
+body {
+  font-family: 'Hiragino Maru Gothic ProN', 'BIZ UDGothic', 'Yu Gothic UI', Meiryo,
+    sans-serif;
+  font-size: 18px;
+  color: #3a3a55;
+  background: linear-gradient(160deg, #aee7ff 0%, #d8f7e0 55%, #fff6c9 100%);
+  background-attachment: fixed;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+/* ===== 共通レイアウト ===== */
+
+.screen {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 24px 16px 48px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  min-height: 100vh;
+}
+
+.card {
+  background: #ffffff;
+  border-radius: 24px;
+  box-shadow: 0 6px 16px rgba(80, 120, 200, 0.18);
+  padding: 24px;
+}
+
+.section-title {
+  font-size: 24px;
+  color: #2d6cb5;
+}
+
+/* ===== ボタン ===== */
+
+.btn {
+  border: none;
+  border-radius: 999px;
+  cursor: pointer;
+  font-family: inherit;
+  font-weight: bold;
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+
+.btn:active:not(:disabled) {
+  transform: scale(0.96);
+}
+
+.btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.btn-big {
+  font-size: 22px;
+  padding: 16px 36px;
+  min-height: 60px;
+  width: 100%;
+}
+
+.btn-small {
+  font-size: 16px;
+  padding: 10px 24px;
+  min-height: 44px;
+}
+
+.btn-primary {
+  background: linear-gradient(180deg, #ffb43a, #ff8c1a);
+  color: #fff;
+  box-shadow: 0 4px 0 #d96f00;
+}
+
+.btn-secondary {
+  background: linear-gradient(180deg, #62c6ff, #339df2);
+  color: #fff;
+  box-shadow: 0 4px 0 #1d74c2;
+}
+
+.btn-danger {
+  background: #ff7d7d;
+  color: #fff;
+  box-shadow: 0 3px 0 #d84f4f;
+}
+
+.btn-plain {
+  background: #e8eefb;
+  color: #4a5a7a;
+}
+
+.btn-shop {
+  background: linear-gradient(180deg, #a97aff, #8a5bf0);
+  color: #fff;
+  box-shadow: 0 4px 0 #6a3fd0;
+}
+
+.btn-island {
+  background: linear-gradient(180deg, #4bd38a, #2bb46a);
+  color: #fff;
+  box-shadow: 0 4px 0 #1c8b4f;
+}
+
+/* ===== タイトル画面 ===== */
+
+.title-screen {
+  justify-content: center;
+}
+
+.title-logo {
+  text-align: center;
+}
+
+.title-emoji {
+  font-size: 64px;
+}
+
+.title-main {
+  font-size: 40px;
+  color: #ff8c1a;
+  text-shadow: 2px 3px 0 #ffffff, 4px 5px 0 rgba(45, 108, 181, 0.25);
+}
+
+.title-sub {
+  font-size: 24px;
+  color: #2d6cb5;
+  margin-top: 4px;
+}
+
+.title-description {
+  text-align: center;
+  font-size: 18px;
+  line-height: 1.8;
+  color: #4a5a7a;
+}
+
+.title-card {
+  width: 100%;
+  max-width: 420px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  text-align: center;
+}
+
+.title-welcome {
+  font-size: 22px;
+}
+
+.name-label {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.name-input {
+  font-family: inherit;
+  font-size: 24px;
+  text-align: center;
+  padding: 14px;
+  border: 3px solid #62c6ff;
+  border-radius: 16px;
+  outline: none;
+}
+
+.name-input:focus {
+  border-color: #ff8c1a;
+}
+
+.app-version {
+  font-size: 13px;
+  color: #8b93a8;
+  margin-top: 4px;
+}
+
+/* ===== ホーム画面 ===== */
+
+.home-header {
+  text-align: center;
+}
+
+.home-title {
+  font-size: 32px;
+  color: #2d6cb5;
+}
+
+.home-player-name {
+  font-size: 20px;
+  margin-top: 4px;
+}
+
+.level-card {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 18px 24px;
+}
+
+.level-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.level-badge {
+  font-size: 22px;
+  font-weight: bold;
+  color: #ffffff;
+  background: linear-gradient(180deg, #ffb43a, #ff8c1a);
+  border-radius: 999px;
+  padding: 6px 22px;
+  box-shadow: 0 3px 0 #d96f00;
+}
+
+.level-exp {
+  font-size: 20px;
+  font-weight: bold;
+  color: #2d6cb5;
+}
+
+.level-bar {
+  width: 100%;
+  height: 18px;
+  background: #e8eefb;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.level-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #62c6ff, #339df2);
+  border-radius: 999px;
+  transition: width 0.5s ease;
+}
+
+.level-next {
+  font-size: 16px;
+  font-weight: bold;
+  color: #7a86a5;
+  text-align: center;
+}
+
+.status-row {
+  display: flex;
+  gap: 12px;
+  width: 100%;
+}
+
+.status-card {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 14px 8px;
+}
+
+.status-emoji {
+  font-size: 28px;
+}
+
+.status-label {
+  font-size: 14px;
+  color: #7a86a5;
+}
+
+.status-value {
+  font-size: 24px;
+  font-weight: bold;
+  color: #2d6cb5;
+}
+
+.area-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 14px;
+  width: 100%;
+}
+
+.area-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  font-family: inherit;
+  border: 3px solid transparent;
+  cursor: pointer;
+  text-align: center;
+}
+
+.area-open {
+  border-color: #ffb43a;
+}
+
+.area-open:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 20px rgba(80, 120, 200, 0.25);
+}
+
+.area-locked {
+  cursor: not-allowed;
+  opacity: 0.65;
+}
+
+.area-emoji {
+  font-size: 44px;
+}
+
+.area-name {
+  font-size: 21px;
+  font-weight: bold;
+  color: #3a3a55;
+}
+
+.area-subject {
+  font-size: 15px;
+  color: #ffffff;
+  background: #62c6ff;
+  border-radius: 999px;
+  padding: 2px 14px;
+}
+
+.area-description {
+  font-size: 14px;
+  color: #7a86a5;
+}
+
+.area-badge {
+  font-size: 15px;
+  font-weight: bold;
+  border-radius: 999px;
+  padding: 4px 16px;
+}
+
+.area-badge-open {
+  background: #ffe3ad;
+  color: #c0690a;
+}
+
+.area-badge-locked {
+  background: #e3e6ef;
+  color: #8b93a8;
+}
+
+.home-buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  max-width: 420px;
+}
+
+/* ===== クエスト選択画面 ===== */
+
+.quest-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  width: 100%;
+  max-width: 560px;
+}
+
+.quest-select-card {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.quest-select-name {
+  font-size: 23px;
+  color: #2d6cb5;
+}
+
+.quest-select-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.quest-tag {
+  font-size: 15px;
+  font-weight: bold;
+  border-radius: 999px;
+  padding: 4px 14px;
+}
+
+.quest-tag-unit {
+  background: #e8f4ff;
+  color: #3a7bbf;
+}
+
+.quest-tag-count {
+  background: #f0eaff;
+  color: #7a5bbf;
+}
+
+.quest-tag-new {
+  background: #fff0b8;
+  color: #b0700a;
+}
+
+.quest-tag-cleared {
+  background: #e3f7dc;
+  color: #3d8f4e;
+}
+
+/* ===== レベルアップ演出 ===== */
+
+.levelup-banner {
+  font-size: 22px;
+  font-weight: bold;
+  color: #ffffff;
+  background: linear-gradient(90deg, #ffb43a, #ff7ab8, #a97aff);
+  border-radius: 18px;
+  padding: 16px;
+  box-shadow: 0 6px 16px rgba(255, 140, 26, 0.4);
+  animation: levelup-pop 0.7s ease;
+}
+
+@keyframes levelup-pop {
+  0% {
+    opacity: 0;
+    transform: scale(0.5) rotate(-4deg);
+  }
+  60% {
+    transform: scale(1.1) rotate(2deg);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(0);
+  }
+}
+
+/* ===== 図鑑コンプリート演出 ===== */
+
+.dex-complete-banner {
+  font-size: 20px;
+  font-weight: bold;
+  color: #ffffff;
+  text-align: center;
+  line-height: 1.6;
+  background: linear-gradient(90deg, #ffb43a, #ff7ab8, #62c6ff, #a97aff);
+  background-size: 300% 100%;
+  border-radius: 18px;
+  padding: 18px;
+  box-shadow: 0 6px 18px rgba(169, 122, 255, 0.4);
+  animation: levelup-pop 0.7s ease, dex-shine 4s ease infinite;
+}
+
+@keyframes dex-shine {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* ===== クエスト画面 ===== */
+
+.quest-screen {
+  justify-content: center;
+}
+
+.quest-intro-card {
+  width: 100%;
+  max-width: 480px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  text-align: center;
+}
+
+.quest-emoji {
+  font-size: 56px;
+}
+
+.quest-title {
+  font-size: 28px;
+  color: #ff8c1a;
+}
+
+.quest-description {
+  font-size: 18px;
+  line-height: 1.8;
+}
+
+.quest-count {
+  font-size: 18px;
+  font-weight: bold;
+  color: #2d6cb5;
+}
+
+/* ===== 問題画面 ===== */
+
+.quiz-card {
+  width: 100%;
+  max-width: 560px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.quiz-progress {
+  font-size: 18px;
+  font-weight: bold;
+  color: #2d6cb5;
+}
+
+.quiz-unit {
+  font-size: 15px;
+  color: #7a86a5;
+}
+
+.quiz-text {
+  font-size: 23px;
+  line-height: 1.7;
+  font-weight: bold;
+}
+
+.choice-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.choice-btn {
+  font-family: inherit;
+  font-size: 22px;
+  font-weight: bold;
+  min-height: 64px;
+  border-radius: 18px;
+  border: 3px solid #62c6ff;
+  background: #f2faff;
+  color: #2d6cb5;
+  cursor: pointer;
+  transition: transform 0.1s ease;
+}
+
+.choice-btn:hover:not(:disabled) {
+  transform: scale(1.03);
+  background: #dff2ff;
+}
+
+.choice-btn:disabled {
+  cursor: default;
+}
+
+.choice-correct {
+  background: #d7f7d0;
+  border-color: #52c164;
+  color: #237a34;
+  animation: pop 0.4s ease;
+}
+
+.choice-wrong {
+  background: #ffe3dc;
+  border-color: #ff9a80;
+  color: #c05237;
+}
+
+.choice-faded {
+  opacity: 0.5;
+}
+
+@keyframes pop {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.08);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.feedback {
+  border-radius: 18px;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  animation: slide-up 0.3s ease;
+}
+
+.feedback-correct {
+  background: #eafbe4;
+  border: 3px solid #8fdb7c;
+}
+
+.feedback-wrong {
+  background: #fff3e0;
+  border: 3px solid #ffc37c;
+}
+
+.feedback-title {
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.feedback-correct .feedback-title {
+  color: #2f9c46;
+}
+
+.feedback-wrong .feedback-title {
+  color: #d97b13;
+}
+
+.feedback-explanation {
+  font-size: 19px;
+  line-height: 1.7;
+}
+
+@keyframes slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ===== 結果画面 ===== */
+
+.result-screen {
+  justify-content: center;
+}
+
+.result-card {
+  width: 100%;
+  max-width: 480px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  text-align: center;
+}
+
+.result-title {
+  font-size: 30px;
+  color: #ff8c1a;
+}
+
+.clear-badge {
+  font-size: 18px;
+  font-weight: bold;
+  border-radius: 999px;
+  padding: 10px 20px;
+  animation: slide-up 0.4s ease;
+}
+
+.clear-badge-first {
+  background: linear-gradient(90deg, #fff0b8, #ffe082, #fff0b8);
+  color: #b0700a;
+  border: 3px solid #ffd54a;
+}
+
+.clear-badge-practice {
+  background: #e8f4ff;
+  color: #3a7bbf;
+  border: 3px solid #a8d4f7;
+}
+
+.result-message {
+  font-size: 22px;
+  font-weight: bold;
+  color: #3a3a55;
+}
+
+.result-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.result-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #f2f7ff;
+  border-radius: 14px;
+  padding: 12px 18px;
+}
+
+.result-label {
+  font-size: 18px;
+  font-weight: bold;
+  color: #4a5a7a;
+}
+
+.result-value {
+  font-size: 24px;
+  font-weight: bold;
+  color: #2d6cb5;
+}
+
+.monster-get {
+  border-radius: 18px;
+  padding: 18px;
+  background: #f6f0ff;
+  border: 3px solid #c9b3f2;
+}
+
+.monster-get-new {
+  background: #fff8dc;
+  border-color: #ffd54a;
+  animation: pop 0.6s ease;
+}
+
+.monster-get-emoji {
+  font-size: 64px;
+  animation: bounce 1s ease infinite;
+}
+
+@keyframes bounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.monster-get-text {
+  font-size: 21px;
+  line-height: 1.7;
+  margin-top: 8px;
+}
+
+/* ===== 図鑑 ===== */
+
+.dex-title {
+  font-size: 30px;
+  color: #2d6cb5;
+}
+
+.dex-count {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.dex-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 14px;
+  width: 100%;
+}
+
+.dex-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  text-align: center;
+}
+
+.dex-locked {
+  opacity: 0.6;
+  background: #eef0f6;
+}
+
+.dex-emoji {
+  font-size: 48px;
+}
+
+.dex-name {
+  font-size: 21px;
+  font-weight: bold;
+}
+
+.dex-subject {
+  font-size: 15px;
+  color: #ffffff;
+  background: #62c6ff;
+  border-radius: 999px;
+  padding: 2px 14px;
+}
+
+.dex-description {
+  font-size: 15px;
+  line-height: 1.6;
+  color: #5a6580;
+}
+
+/* ===== まなびショップ ===== */
+
+.shop-coin-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 24px;
+}
+
+.shop-coin-label {
+  font-size: 18px;
+  font-weight: bold;
+  color: #7a86a5;
+}
+
+.shop-coin-value {
+  margin-left: auto;
+  font-size: 30px;
+  font-weight: bold;
+  color: #c0690a;
+}
+
+.shop-dex-message {
+  background: linear-gradient(90deg, #fff0b8, #ffe082, #fff0b8);
+  color: #b0700a;
+  font-size: 17px;
+  font-weight: bold;
+  text-align: center;
+  line-height: 1.6;
+  padding: 16px;
+  border: 3px solid #ffd54a;
+}
+
+.shop-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 14px;
+  width: 100%;
+}
+
+.shop-item-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  text-align: center;
+  border: 3px solid transparent;
+}
+
+.shop-item-purchased {
+  background: #eef7ee;
+  border-color: #8fdb7c;
+}
+
+.shop-item-emoji {
+  font-size: 46px;
+}
+
+.shop-item-name {
+  font-size: 20px;
+  font-weight: bold;
+  color: #3a3a55;
+}
+
+.shop-item-category {
+  font-size: 14px;
+  color: #ffffff;
+  background: #a97aff;
+  border-radius: 999px;
+  padding: 2px 14px;
+}
+
+.shop-item-description {
+  font-size: 14px;
+  line-height: 1.5;
+  color: #5a6580;
+  min-height: 42px;
+}
+
+.shop-item-price {
+  font-size: 19px;
+  font-weight: bold;
+  color: #c0690a;
+}
+
+.shop-buy-btn {
+  width: 100%;
+  margin-top: 4px;
+}
+
+.shop-item-owned {
+  width: 100%;
+  margin-top: 4px;
+  font-size: 17px;
+  font-weight: bold;
+  color: #2f9c46;
+  background: #d7f7d0;
+  border-radius: 999px;
+  padding: 10px;
+}
+
+.shop-feedback {
+  width: 100%;
+  font-size: 15px;
+  font-weight: bold;
+  border-radius: 12px;
+  padding: 8px;
+  animation: slide-up 0.3s ease;
+}
+
+.shop-feedback-ok {
+  background: #eafbe4;
+  color: #2f9c46;
+}
+
+.shop-feedback-ng {
+  background: #ffe3dc;
+  color: #c05237;
+}
+
+.shop-island-note {
+  font-size: 15px;
+  font-weight: bold;
+  color: #2bb46a;
+  margin-top: 6px;
+}
+
+.home-island-hint {
+  font-size: 14px;
+  color: #7a86a5;
+  text-align: center;
+  margin-top: -4px;
+}
+
+/* ===== まなび島画面 ===== */
+
+.island-screen {
+  background: linear-gradient(180deg, rgba(174, 231, 255, 0) 0%, rgba(216, 247, 224, 0.4) 100%);
+}
+
+.island-flag-banner {
+  width: 100%;
+  font-size: 18px;
+  font-weight: bold;
+  text-align: center;
+  line-height: 1.6;
+  color: #b0700a;
+  background: linear-gradient(90deg, #fff0b8, #ffe082, #fff0b8);
+  border: 3px solid #ffd54a;
+  animation: levelup-pop 0.7s ease;
+}
+
+.island-flag-hint {
+  width: 100%;
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
+  line-height: 1.6;
+  color: #5a6580;
+  background: #eef2fb;
+}
+
+.island-flag-hint-ready {
+  color: #c0690a;
+  background: #fff6df;
+  border: 3px solid #ffd54a;
+}
+
+.island-stats {
+  display: flex;
+  gap: 12px;
+  width: 100%;
+  flex-wrap: wrap;
+}
+
+.island-stat {
+  flex: 1;
+  min-width: 90px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 14px 8px;
+}
+
+.island-stat-wide {
+  flex-basis: 100%;
+}
+
+.island-stat-emoji {
+  font-size: 26px;
+}
+
+.island-stat-label {
+  font-size: 14px;
+  color: #7a86a5;
+}
+
+.island-stat-value {
+  font-size: 22px;
+  font-weight: bold;
+  color: #2d6cb5;
+}
+
+.island-liveliness {
+  color: #2bb46a;
+}
+
+.island-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 14px;
+  width: 100%;
+}
+
+.island-monster,
+.island-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  text-align: center;
+  border: 3px solid transparent;
+}
+
+.island-monster:not(.island-locked) {
+  border-color: #8fdb7c;
+}
+
+.island-item:not(.island-locked) {
+  border-color: #ffb43a;
+}
+
+.island-locked {
+  opacity: 0.55;
+  background: #eef0f6;
+}
+
+.island-monster-emoji,
+.island-item-emoji {
+  font-size: 44px;
+}
+
+.island-monster-name,
+.island-item-name {
+  font-size: 20px;
+  font-weight: bold;
+  color: #3a3a55;
+}
+
+.island-monster-subject {
+  font-size: 14px;
+  color: #ffffff;
+  background: #62c6ff;
+  border-radius: 999px;
+  padding: 2px 14px;
+}
+
+.island-item-category {
+  font-size: 14px;
+  color: #ffffff;
+  background: #a97aff;
+  border-radius: 999px;
+  padding: 2px 14px;
+}
+
+.island-monster-desc,
+.island-item-desc {
+  font-size: 14px;
+  line-height: 1.5;
+  color: #5a6580;
+}
+
+/* ===== スマホ・タブレット調整 ===== */
+
+@media (max-width: 480px) {
+  .title-main {
+    font-size: 30px;
+  }
+
+  .choice-grid {
+    grid-template-columns: 1fr;
+  }
+}

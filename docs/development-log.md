@@ -63,3 +63,7 @@ vite.config.ts の base、README内URL、公開手順を更新。バージョン
 横スクロール防止（overflow-x、単語折り返し）、ステータスの折り返し、
 768px/560px/360px のブレークポイントでカードの縦並び・文字サイズ・余白を最適化。
 ゲーム機能そのものの変更はなし。
+
+アプリアイコンを追加。public/ に icon-512 / icon-192 / apple-touch-icon(180) / favicon-32 を配置し、
+index.html にファビコン・apple-touch-icon・theme-color を設定。
+（緑色のまなびモンスターが本を読むオリジナルアイコン）

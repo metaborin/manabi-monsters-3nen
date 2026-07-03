@@ -1,0 +1,26 @@
+{
+  "name": "まなびモンスターズ：3年生のひみつ島",
+  "short_name": "まなびモンスターズ",
+  "description": "小学3年生が5教科を楽しく学べる学習ゲーム",
+  "lang": "ja",
+  "start_url": "/manabi-monsters-3nen/",
+  "scope": "/manabi-monsters-3nen/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#e8f8ff",
+  "theme_color": "#62c6ff",
+  "icons": [
+    {
+      "src": "/manabi-monsters-3nen/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/manabi-monsters-3nen/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

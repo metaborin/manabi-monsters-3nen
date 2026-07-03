@@ -67,3 +67,12 @@ vite.config.ts の base、README内URL、公開手順を更新。バージョン
 アプリアイコンを追加。public/ に icon-512 / icon-192 / apple-touch-icon(180) / favicon-32 を配置し、
 index.html にファビコン・apple-touch-icon・theme-color を設定。
 （緑色のまなびモンスターが本を読むオリジナルアイコン）
+
+## v0.7.5
+PWA対応を追加。public/manifest.webmanifest（GitHub Pagesサブパス用に絶対パス指定）、
+index.html にホーム画面追加用meta（apple-mobile-web-app-*、mobile-web-app-capable、manifestリンク）を整備し、
+スマホ・タブレットでアプリのように起動しやすくした。
+Service Worker（public/sw.js）を追加。本番ビルド時のみ登録し、
+network-first方針・バージョン付きキャッシュ名（manabi-monsters-v0.7.5）・
+activate時の古いキャッシュ削除で、更新後に古い画面が残りすぎないようにした。
+READMEにホーム画面追加手順と「表示が古い場合の再読み込み」案内を追記。

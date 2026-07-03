@@ -16,10 +16,26 @@ body {
   color: #3a3a55;
   background: linear-gradient(160deg, #aee7ff 0%, #d8f7e0 55%, #fff6c9 100%);
   background-attachment: fixed;
+  /* スマホで横スクロールが出ないようにする安全策 */
+  overflow-x: hidden;
+  -webkit-text-size-adjust: 100%;
 }
 
 #root {
   min-height: 100vh;
+  width: 100%;
+}
+
+/* 長い単語・英単語などがはみ出して横スクロールにならないようにする */
+p,
+h1,
+h2,
+h3,
+span,
+button,
+label {
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 
 /* ===== 共通レイアウト ===== */
@@ -256,12 +272,15 @@ body {
 
 .status-row {
   display: flex;
+  flex-wrap: wrap;
   gap: 12px;
   width: 100%;
 }
 
 .status-card {
-  flex: 1;
+  flex: 1 1 0;
+  /* 狭い画面では折り返して2列以上にする（横あふれ防止） */
+  min-width: 120px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -1079,14 +1098,133 @@ body {
   color: #5a6580;
 }
 
-/* ===== スマホ・タブレット調整 ===== */
+/* ===== タブレット・スマホ調整 ===== */
 
-@media (max-width: 480px) {
+/* タブレット・小さめノート（〜768px）: カードは自然に折り返す */
+@media (max-width: 768px) {
+  .area-grid,
+  .dex-grid,
+  .shop-grid,
+  .island-grid {
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  }
+}
+
+/* スマホ（〜560px）: 余白と文字を調整し、カードを縦並び中心にする */
+@media (max-width: 560px) {
+  .screen {
+    padding: 16px 12px 40px;
+    gap: 16px;
+  }
+
+  .card {
+    padding: 18px;
+    border-radius: 20px;
+  }
+
+  .title-emoji {
+    font-size: 52px;
+  }
+
   .title-main {
     font-size: 30px;
   }
 
+  .title-sub {
+    font-size: 20px;
+  }
+
+  .title-description {
+    font-size: 16px;
+    line-height: 1.7;
+  }
+
+  .home-title {
+    font-size: 26px;
+  }
+
+  .section-title {
+    font-size: 21px;
+  }
+
+  /* ステータスは2列に折り返す */
+  .status-card {
+    min-width: calc(50% - 6px);
+  }
+
+  /* エリア・図鑑・ショップ・島のカードは1列に */
+  .area-grid,
+  .dex-grid,
+  .shop-grid,
+  .island-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* 選択肢は1列で大きく押しやすく */
   .choice-grid {
     grid-template-columns: 1fr;
+  }
+
+  .choice-btn {
+    font-size: 20px;
+    min-height: 60px;
+  }
+
+  .quiz-text {
+    font-size: 21px;
+  }
+
+  .feedback-explanation {
+    font-size: 17px;
+  }
+
+  /* ボタンが近すぎないよう間隔を確保 */
+  .home-buttons {
+    gap: 14px;
+  }
+
+  .btn-big {
+    font-size: 20px;
+    padding: 16px 24px;
+  }
+
+  /* 補足テキストが小さくなりすぎないように下限を確保 */
+  .status-label,
+  .island-stat-label,
+  .area-description,
+  .dex-description,
+  .shop-item-description,
+  .island-monster-desc,
+  .island-item-desc,
+  .quiz-unit {
+    font-size: 15px;
+  }
+}
+
+/* 小型スマホ（〜360px）: さらに余白と見出しを圧縮 */
+@media (max-width: 360px) {
+  .title-main {
+    font-size: 26px;
+  }
+
+  .home-title {
+    font-size: 23px;
+  }
+
+  .level-badge {
+    font-size: 20px;
+    padding: 6px 16px;
+  }
+
+  .level-exp {
+    font-size: 18px;
+  }
+
+  /* 極小幅ではステータスを1列にして窮屈さを解消 */
+  .status-card {
+    min-width: 100%;
+    flex-direction: row;
+    justify-content: center;
+    gap: 10px;
   }
 }

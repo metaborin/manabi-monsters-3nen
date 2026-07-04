@@ -139,7 +139,7 @@ export function IslandScreen({ player, onBack, onOpenShop }: Props) {
           🛍️ まなびショップへ行く
         </button>
         <button className="btn btn-primary btn-big" onClick={onBack}>
-          🏠 ホームへもどる
+          🗺️ 島マップへもどる
         </button>
       </div>
     </div>

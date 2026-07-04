@@ -4,6 +4,7 @@ import { MONSTERS } from '../data/monsters';
 import { SHOP_ITEMS } from '../data/shopItems';
 import { getLevelInfo } from '../utils/level';
 import { AreaCard } from './AreaCard';
+import { MapSpotCard } from './MapSpotCard';
 
 interface Props {
   player: PlayerState;
@@ -26,8 +27,9 @@ export function HomeScreen({
 
   return (
     <div className="screen home-screen">
-      <header className="home-header">
-        <h2 className="home-title">🏝️ まなび島</h2>
+      <header className="home-header island-map-header">
+        <h2 className="home-title">🗺️ まなび島マップ</h2>
+        <p className="island-here">🧭 いまいるところ：ちゅうおう広場</p>
         <p className="home-player-name">ぼうけんしゃ：{player.name} さん</p>
       </header>
 
@@ -76,24 +78,41 @@ export function HomeScreen({
         </div>
       </div>
 
-      <h3 className="section-title">どこにいく？</h3>
+      <p className="island-guide">タップして、行きたいばしょへ出発！ 🚶</p>
+
+      <h3 className="section-title">📚 きょうかの島</h3>
       <div className="area-grid">
         {AREAS.map((area) => (
           <AreaCard key={area.id} area={area} onSelect={onSelectArea} />
         ))}
       </div>
 
+      <h3 className="section-title">🏘️ 島のしせつ</h3>
+      <div className="area-grid">
+        <MapSpotCard
+          emoji="🛍️"
+          name="まなびショップ"
+          description="コインでアイテムを集めよう"
+          accent="shop"
+          onSelect={onOpenShop}
+        />
+        <MapSpotCard
+          emoji="📖"
+          name="モンスターずかん"
+          description="仲間のモンスターを見よう"
+          accent="dex"
+          onSelect={onOpenDex}
+        />
+        <MapSpotCard
+          emoji="🎪"
+          name="コレクション広場"
+          description="島に飾ったものを見よう"
+          accent="island"
+          onSelect={onOpenIsland}
+        />
+      </div>
+
       <div className="home-buttons">
-        <button className="btn btn-secondary btn-big" onClick={onOpenDex}>
-          📖 モンスター図鑑
-        </button>
-        <button className="btn btn-shop btn-big" onClick={onOpenShop}>
-          🛍️ まなびショップ
-        </button>
-        <button className="btn btn-island btn-big" onClick={onOpenIsland}>
-          🏝️ まなび島を見る
-        </button>
-        <p className="home-island-hint">集めたモンスターやアイテムで、まなび島をにぎやかにしよう！</p>
         <button className="btn btn-plain btn-small" onClick={onBackToTitle}>
           🏠 タイトルへもどる
         </button>

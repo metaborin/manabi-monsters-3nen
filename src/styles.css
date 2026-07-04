@@ -400,6 +400,71 @@ label {
   max-width: 420px;
 }
 
+/* ===== まなび島マップ（ホーム拠点） ===== */
+
+.island-map-header {
+  width: 100%;
+}
+
+.island-here {
+  display: inline-block;
+  margin-top: 6px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #2bb46a;
+  background: #e3f7ea;
+  border-radius: 999px;
+  padding: 4px 16px;
+}
+
+.island-guide {
+  font-size: 17px;
+  font-weight: bold;
+  color: #4a5a7a;
+  text-align: center;
+}
+
+/* 施設カード（ショップ・図鑑・コレクション）: エリアカードと同じ形にそろえる */
+.map-spot {
+  cursor: pointer;
+}
+
+.map-spot-shop {
+  border-color: #a97aff;
+}
+
+.map-spot-dex {
+  border-color: #62c6ff;
+}
+
+.map-spot-island {
+  border-color: #4bd38a;
+}
+
+.map-spot .area-emoji {
+  font-size: 52px;
+}
+
+.map-spot-badge {
+  background: #fff2c9;
+  color: #c0690a;
+}
+
+.map-spot-shop .map-spot-badge {
+  background: #efe6ff;
+  color: #6a3fd0;
+}
+
+.map-spot-dex .map-spot-badge {
+  background: #e3f2ff;
+  color: #2d6cb5;
+}
+
+.map-spot-island .map-spot-badge {
+  background: #e3f7ea;
+  color: #1c8b4f;
+}
+
 /* ===== クエスト選択画面 ===== */
 
 .area-background-screen {

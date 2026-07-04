@@ -98,7 +98,7 @@ export function ShopScreen({ player, onBuy, onBack }: Props) {
       </div>
 
       <button className="btn btn-primary btn-big" onClick={onBack}>
-        🏠 ホームへもどる
+        🗺️ 島マップへもどる
       </button>
     </div>
   );

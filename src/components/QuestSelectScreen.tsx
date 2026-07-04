@@ -55,7 +55,7 @@ export function QuestSelectScreen({ area, quests, clearedQuestIds, onSelectQuest
       </div>
 
       <button className="btn btn-plain btn-small" onClick={onBack}>
-        ↩️ ホームへもどる
+        🗺️ 島マップへもどる
       </button>
     </div>
   );

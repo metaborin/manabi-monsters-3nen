@@ -76,3 +76,6 @@ Service Worker（public/sw.js）を追加。本番ビルド時のみ登録し、
 network-first方針・バージョン付きキャッシュ名（manabi-monsters-v0.7.5）・
 activate時の古いキャッシュ削除で、更新後に古い画面が残りすぎないようにした。
 READMEにホーム画面追加手順と「表示が古い場合の再読み込み」案内を追記。
+
+## v0.7.6
+作成済みの5教科モンスター画像をアプリ画面に組み込み。`public/assets/monsters/` の512px版PNGを通常表示に使い、モンスター図鑑・結果画面・まなび島のモンスター広場で画像表示に対応。画像パスは `import.meta.env.BASE_URL` を使ってGitHub Pagesのbaseに対応し、画像が読み込めない場合は従来の絵文字表示にフォールバックするようにした。保存キー、保存データ構造、モンスターID、クエストID、問題ID、Vite base、PWA設定、Service Workerは変更なし。

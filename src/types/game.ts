@@ -58,6 +58,7 @@ export interface Monster {
   name: string;
   subject: Subject;
   emoji: string;
+  image?: string;
   description: string;
 }
 

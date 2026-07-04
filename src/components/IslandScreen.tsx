@@ -2,6 +2,7 @@ import type { PlayerState } from '../types/game';
 import { SUBJECT_LABELS } from '../types/game';
 import { MONSTERS } from '../data/monsters';
 import { SHOP_ITEMS } from '../data/shopItems';
+import { MonsterImage } from './MonsterImage';
 
 interface Props {
   player: PlayerState;
@@ -82,7 +83,17 @@ export function IslandScreen({ player, onBack, onOpenShop }: Props) {
               key={monster.id}
               className={`card island-monster ${owned ? '' : 'island-locked'}`}
             >
-              <span className="island-monster-emoji">{owned ? monster.emoji : '❓'}</span>
+              <div className="island-monster-media">
+                {owned ? (
+                  <MonsterImage
+                    monster={monster}
+                    className="monster-image island-monster-image"
+                    fallbackClassName="island-monster-emoji"
+                  />
+                ) : (
+                  <span className="island-monster-emoji">❓</span>
+                )}
+              </div>
               <span className="island-monster-name">{owned ? monster.name : '？？？'}</span>
               {owned ? (
                 <>

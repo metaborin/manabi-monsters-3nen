@@ -1,5 +1,6 @@
 import { MONSTERS } from '../data/monsters';
 import { SUBJECT_LABELS } from '../types/game';
+import { MonsterImage } from './MonsterImage';
 
 interface Props {
   ownedMonsterIds: string[];
@@ -28,7 +29,17 @@ export function MonsterDex({ ownedMonsterIds, onBack }: Props) {
           const owned = ownedMonsterIds.includes(monster.id);
           return (
             <div key={monster.id} className={`card dex-card ${owned ? '' : 'dex-locked'}`}>
-              <div className="dex-emoji">{owned ? monster.emoji : '❓'}</div>
+              <div className="dex-monster-media">
+                {owned ? (
+                  <MonsterImage
+                    monster={monster}
+                    className="monster-image monster-card-image"
+                    fallbackClassName="dex-emoji"
+                  />
+                ) : (
+                  <span className="dex-emoji">❓</span>
+                )}
+              </div>
               <div className="dex-name">{owned ? monster.name : '？？？'}</div>
               <div className="dex-subject">{SUBJECT_LABELS[monster.subject]}</div>
               <p className="dex-description">

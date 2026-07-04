@@ -1,5 +1,6 @@
 import type { Monster, QuestResult } from '../types/game';
 import { getLevelInfo } from '../utils/level';
+import { MonsterImage } from './MonsterImage';
 
 interface Props {
   result: QuestResult;
@@ -84,7 +85,11 @@ export function ResultScreen({
 
         {rewardMonster && (
           <div className={`monster-get ${isNewMonster ? 'monster-get-new' : ''}`}>
-            <div className="monster-get-emoji">{rewardMonster.emoji}</div>
+            <MonsterImage
+              monster={rewardMonster}
+              className="monster-image result-monster-image"
+              fallbackClassName="monster-get-emoji"
+            />
             {isNewMonster ? (
               <p className="monster-get-text">
                 <strong>{rewardMonster.name}</strong>が仲間になった！

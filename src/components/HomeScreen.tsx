@@ -3,6 +3,7 @@ import { AREAS } from '../data/areas';
 import { MONSTERS } from '../data/monsters';
 import { SHOP_ITEMS } from '../data/shopItems';
 import { getLevelInfo } from '../utils/level';
+import { getAreaProgress, getNextGuide } from '../utils/progress';
 import { AreaCard } from './AreaCard';
 import { MapSpotCard } from './MapSpotCard';
 
@@ -24,12 +25,32 @@ export function HomeScreen({
   onBackToTitle,
 }: Props) {
   const levelInfo = getLevelInfo(player.exp);
+  const nextGuide = getNextGuide(player);
+
+  const ownedMonsters = player.monsterIds.length;
+  const remainingMonsters = MONSTERS.length - ownedMonsters;
+  const ownedItems = player.purchasedItemIds.length;
+
+  // ショップの状態：買えるアイテムがあるか
+  const affordableItem = SHOP_ITEMS.some(
+    (item) =>
+      !player.purchasedItemIds.includes(item.id) &&
+      !(item.requiresDexComplete && remainingMonsters > 0) &&
+      player.coins >= item.price,
+  );
+  const allItemsOwned = ownedItems === SHOP_ITEMS.length;
+  const shopStatus = allItemsOwned
+    ? 'ぜんぶそろった！'
+    : affordableItem
+    ? '🪙 買えるよ！'
+    : 'コインをためよう';
 
   return (
     <div className="screen home-screen">
       <header className="home-header island-map-header">
         <h2 className="home-title">🗺️ まなび島マップ</h2>
         <p className="island-here">🧭 いまいるところ：ちゅうおう広場</p>
+        <p className="island-here-sub">ここから まなび島を たんけんしよう！</p>
         <p className="home-player-name">ぼうけんしゃ：{player.name} さん</p>
       </header>
 
@@ -66,24 +87,37 @@ export function HomeScreen({
           <span className="status-emoji">🧸</span>
           <span className="status-label">なかま</span>
           <span className="status-value">
-            {player.monsterIds.length} / {MONSTERS.length}
+            {ownedMonsters} / {MONSTERS.length}
           </span>
         </div>
         <div className="card status-card">
           <span className="status-emoji">🛍️</span>
           <span className="status-label">アイテム</span>
           <span className="status-value">
-            {player.purchasedItemIds.length} / {SHOP_ITEMS.length}
+            {ownedItems} / {SHOP_ITEMS.length}
           </span>
         </div>
       </div>
 
-      <p className="island-guide">タップして、行きたいばしょへ出発！ 🚶</p>
+      {/* 次のおすすめ */}
+      <div className="card next-guide-card">
+        <span className="next-guide-emoji">🧭</span>
+        <div className="next-guide-text">
+          <span className="next-guide-label">つぎのおすすめ</span>
+          <span className="next-guide-message">{nextGuide.message}</span>
+        </div>
+      </div>
 
       <h3 className="section-title">📚 きょうかの島</h3>
       <div className="area-grid">
         {AREAS.map((area) => (
-          <AreaCard key={area.id} area={area} onSelect={onSelectArea} />
+          <AreaCard
+            key={area.id}
+            area={area}
+            onSelect={onSelectArea}
+            progress={area.available ? getAreaProgress(area.id, player.clearedQuestIds) : undefined}
+            recommended={nextGuide.areaId === area.id}
+          />
         ))}
       </div>
 
@@ -94,6 +128,8 @@ export function HomeScreen({
           name="まなびショップ"
           description="コインでアイテムを集めよう"
           accent="shop"
+          status={shopStatus}
+          statusHighlight={affordableItem && !allItemsOwned}
           onSelect={onOpenShop}
         />
         <MapSpotCard
@@ -101,6 +137,11 @@ export function HomeScreen({
           name="モンスターずかん"
           description="仲間のモンスターを見よう"
           accent="dex"
+          status={
+            remainingMonsters > 0
+              ? `${ownedMonsters}/${MONSTERS.length} あつめた`
+              : 'ぜんぶあつめた！'
+          }
           onSelect={onOpenDex}
         />
         <MapSpotCard
@@ -108,6 +149,7 @@ export function HomeScreen({
           name="コレクション広場"
           description="島に飾ったものを見よう"
           accent="island"
+          status={`なかま ${ownedMonsters}体`}
           onSelect={onOpenIsland}
         />
       </div>

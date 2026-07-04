@@ -1,9 +1,11 @@
+import { useState } from 'react';
 import type { Area, PlayerState } from '../types/game';
 import { AREAS } from '../data/areas';
 import { MONSTERS } from '../data/monsters';
 import { SHOP_ITEMS } from '../data/shopItems';
 import { getLevelInfo } from '../utils/level';
 import { getAreaProgress, getNextGuide } from '../utils/progress';
+import { publicAssetUrl } from '../utils/assets';
 import { AreaCard } from './AreaCard';
 import { MapSpotCard } from './MapSpotCard';
 
@@ -16,6 +18,8 @@ interface Props {
   onBackToTitle: () => void;
 }
 
+const TITLE_LOGO_URL = publicAssetUrl('assets/title/title_logo.png');
+
 export function HomeScreen({
   player,
   onSelectArea,
@@ -26,6 +30,8 @@ export function HomeScreen({
 }: Props) {
   const levelInfo = getLevelInfo(player.exp);
   const nextGuide = getNextGuide(player);
+  const [logoFailed, setLogoFailed] = useState(false);
+  const showLogo = TITLE_LOGO_URL && !logoFailed;
 
   const ownedMonsters = player.monsterIds.length;
   const remainingMonsters = MONSTERS.length - ownedMonsters;
@@ -47,10 +53,27 @@ export function HomeScreen({
 
   return (
     <div className="screen home-screen">
+      <div className="title-hero">
+        {showLogo ? (
+          <img
+            src={TITLE_LOGO_URL}
+            alt="まなびモンスターズ 3年生のひみつ島"
+            className="title-hero-image"
+            decoding="async"
+            onError={() => setLogoFailed(true)}
+          />
+        ) : (
+          <div className="title-hero-fallback">
+            <span className="title-hero-main">まなびモンスターズ</span>
+            <span className="title-hero-sub">3年生のひみつ島</span>
+          </div>
+        )}
+        <p className="title-hero-tagline">🗺️ しまを ぼうけんして モンスターを あつめよう！</p>
+      </div>
+
       <header className="home-header island-map-header">
         <h2 className="home-title">🗺️ まなび島マップ</h2>
         <p className="island-here">🧭 いまいるところ：ちゅうおう広場</p>
-        <p className="island-here-sub">ここから まなび島を たんけんしよう！</p>
         <p className="home-player-name">ぼうけんしゃ：{player.name} さん</p>
       </header>
 

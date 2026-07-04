@@ -202,6 +202,68 @@ label {
   margin-top: 4px;
 }
 
+/* ===== ホーム画面 タイトルビジュアル（v0.8.4） ===== */
+
+.title-hero {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 2px;
+}
+
+.title-hero-image {
+  display: block;
+  width: 100%;
+  max-width: 460px;
+  height: auto;
+  filter: drop-shadow(0 6px 10px rgba(60, 100, 170, 0.28));
+  animation: title-hero-pop 0.5s ease;
+}
+
+@keyframes title-hero-pop {
+  0% {
+    opacity: 0;
+    transform: scale(0.9) translateY(6px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* 画像が読み込めないときの文字タイトル（フォールバック） */
+.title-hero-fallback {
+  width: 100%;
+  max-width: 460px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 14px;
+}
+
+.title-hero-main {
+  font-size: 32px;
+  font-weight: bold;
+  color: #ff8c1a;
+  text-shadow: 2px 3px 0 #ffffff, 4px 5px 0 rgba(45, 108, 181, 0.25);
+}
+
+.title-hero-sub {
+  font-size: 20px;
+  font-weight: bold;
+  color: #2d6cb5;
+}
+
+.title-hero-tagline {
+  font-size: 15px;
+  font-weight: bold;
+  color: #4a5a7a;
+  text-align: center;
+}
+
 /* ===== ホーム画面 ===== */
 
 .home-header {

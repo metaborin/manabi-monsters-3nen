@@ -541,6 +541,81 @@ label {
   color: #c0690a;
 }
 
+/* ===== 入場演出オーバーレイ ===== */
+
+.entrance-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: radial-gradient(
+    circle at 50% 40%,
+    rgba(174, 231, 255, 0.9),
+    rgba(140, 200, 245, 0.94)
+  );
+  cursor: pointer;
+  animation: entrance-fade 0.2s ease;
+}
+
+.entrance-card {
+  width: 100%;
+  max-width: 420px;
+  background: #ffffff;
+  border-radius: 28px;
+  box-shadow: 0 10px 28px rgba(60, 100, 170, 0.3);
+  padding: 32px 24px;
+  text-align: center;
+  animation: entrance-pop 0.35s ease;
+}
+
+.entrance-emoji {
+  font-size: 64px;
+  animation: guide-bounce 1.2s ease-in-out infinite;
+}
+
+.entrance-title {
+  margin-top: 8px;
+  font-size: 26px;
+  font-weight: bold;
+  color: #2d6cb5;
+}
+
+.entrance-subtitle {
+  margin-top: 8px;
+  font-size: 18px;
+  font-weight: bold;
+  color: #4a5a7a;
+}
+
+.entrance-skip {
+  margin-top: 18px;
+  font-size: 14px;
+  color: #8b93a8;
+}
+
+@keyframes entrance-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes entrance-pop {
+  0% {
+    opacity: 0;
+    transform: scale(0.8) translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
 /* 施設カード（ショップ・図鑑・コレクション）: エリアカードと同じ形にそろえる */
 .map-spot {
   cursor: pointer;

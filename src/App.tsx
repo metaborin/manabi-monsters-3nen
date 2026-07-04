@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import type { Area, Quest, QuestResult } from './types/game';
+import type { Area, Quest, QuestResult, Subject } from './types/game';
 import { findQuestsByArea } from './data/quests';
 import { findMonster, MONSTERS } from './data/monsters';
 import { getLevelInfo } from './utils/level';
@@ -12,6 +12,7 @@ import { ResultScreen } from './components/ResultScreen';
 import { MonsterDex } from './components/MonsterDex';
 import { ShopScreen } from './components/ShopScreen';
 import { IslandScreen } from './components/IslandScreen';
+import { EntranceOverlay } from './components/EntranceOverlay';
 
 type Screen =
   | 'title'
@@ -23,6 +24,23 @@ type Screen =
   | 'shop'
   | 'island';
 
+/** 入場演出の情報。target を本来の遷移先として使う。 */
+interface Transition {
+  emoji: string;
+  title: string;
+  subtitle: string;
+  target: { screen: Screen; area?: Area };
+}
+
+/** 教科ごとの入場サブメッセージ（小学3年生向けに短く） */
+const ENTRANCE_SUBTITLE: Record<Subject, string> = {
+  kokugo: 'ことばモンスターをさがそう！',
+  sansu: '数字のひみつを見つけよう！',
+  rika: '観察して、こたえを見つけよう！',
+  shakai: '町のひみつを調べよう！',
+  eigo: '英語カードを集めよう！',
+};
+
 export default function App() {
   const { player, startNewGame, applyQuestResult, buyItem, resetGame } = useGameState();
   const [screen, setScreen] = useState<Screen>('title');
@@ -30,16 +48,57 @@ export default function App() {
   const [currentQuest, setCurrentQuest] = useState<Quest | null>(null);
   const [lastResult, setLastResult] = useState<QuestResult | null>(null);
   const [levelBeforeQuest, setLevelBeforeQuest] = useState(1);
+  const [transition, setTransition] = useState<Transition | null>(null);
 
   const handleStartNew = (name: string) => {
     startNewGame(name);
     setScreen('home');
   };
 
+  // 入場演出が終わったら本来の画面へ進む
+  const finishTransition = () => {
+    if (!transition) return;
+    const { target } = transition;
+    if (target.area) setCurrentArea(target.area);
+    setScreen(target.screen);
+    setTransition(null);
+  };
+
   const handleSelectArea = (area: Area) => {
     if (findQuestsByArea(area.id).length === 0) return;
-    setCurrentArea(area);
-    setScreen('questSelect');
+    setTransition({
+      emoji: area.emoji,
+      title: `${area.name}にとうちゃく！`,
+      subtitle: ENTRANCE_SUBTITLE[area.subject],
+      target: { screen: 'questSelect', area },
+    });
+  };
+
+  const handleOpenShop = () => {
+    setTransition({
+      emoji: '🛍️',
+      title: 'まなびショップにとうちゃく！',
+      subtitle: 'コインでアイテムを見てみよう！',
+      target: { screen: 'shop' },
+    });
+  };
+
+  const handleOpenDex = () => {
+    setTransition({
+      emoji: '📖',
+      title: 'モンスターずかんをひらいた！',
+      subtitle: '集めた仲間を見てみよう！',
+      target: { screen: 'dex' },
+    });
+  };
+
+  const handleOpenIsland = () => {
+    setTransition({
+      emoji: '🎪',
+      title: 'コレクション広場にとうちゃく！',
+      subtitle: '仲間たちに会いに行こう！',
+      target: { screen: 'island' },
+    });
   };
 
   const handleSelectQuest = (quest: Quest) => {
@@ -82,6 +141,7 @@ export default function App() {
     setCurrentArea(null);
     setCurrentQuest(null);
     setLastResult(null);
+    setTransition(null);
     setScreen('title');
   };
 
@@ -161,13 +221,23 @@ export default function App() {
   }
 
   return (
-    <HomeScreen
-      player={player}
-      onSelectArea={handleSelectArea}
-      onOpenDex={() => setScreen('dex')}
-      onOpenShop={() => setScreen('shop')}
-      onOpenIsland={() => setScreen('island')}
-      onBackToTitle={() => setScreen('title')}
-    />
+    <>
+      <HomeScreen
+        player={player}
+        onSelectArea={handleSelectArea}
+        onOpenDex={handleOpenDex}
+        onOpenShop={handleOpenShop}
+        onOpenIsland={handleOpenIsland}
+        onBackToTitle={() => setScreen('title')}
+      />
+      {transition && (
+        <EntranceOverlay
+          emoji={transition.emoji}
+          title={transition.title}
+          subtitle={transition.subtitle}
+          onDone={finishTransition}
+        />
+      )}
+    </>
   );
 }

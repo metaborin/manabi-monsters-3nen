@@ -141,6 +141,16 @@ label {
   text-align: center;
 }
 
+/* タイトルロゴ画像（ホーム画面と統一。名前入力ページ用に少しコンパクト） */
+.title-logo-image {
+  display: block;
+  width: 100%;
+  max-width: 420px;
+  height: auto;
+  filter: drop-shadow(0 6px 10px rgba(60, 100, 170, 0.28));
+  animation: title-hero-pop 0.5s ease;
+}
+
 .title-emoji {
   font-size: 64px;
 }

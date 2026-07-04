@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { APP_VERSION } from '../version';
+import { publicAssetUrl } from '../utils/assets';
 
 interface Props {
   hasSave: boolean;
@@ -9,8 +10,12 @@ interface Props {
   onReset: () => void;
 }
 
+const TITLE_LOGO_URL = publicAssetUrl('assets/title/title_logo.png');
+
 export function TitleScreen({ hasSave, saveName, onStartNew, onContinue, onReset }: Props) {
   const [name, setName] = useState('');
+  const [logoFailed, setLogoFailed] = useState(false);
+  const showLogo = TITLE_LOGO_URL && !logoFailed;
 
   const handleStart = () => {
     const trimmed = name.trim();
@@ -29,9 +34,21 @@ export function TitleScreen({ hasSave, saveName, onStartNew, onContinue, onReset
   return (
     <div className="screen title-screen">
       <div className="title-logo">
-        <div className="title-emoji">🏝️✨</div>
-        <h1 className="title-main">まなびモンスターズ</h1>
-        <p className="title-sub">〜 3年生のひみつ島 〜</p>
+        {showLogo ? (
+          <img
+            src={TITLE_LOGO_URL}
+            alt="まなびモンスターズ 3年生のひみつ島"
+            className="title-logo-image"
+            decoding="async"
+            onError={() => setLogoFailed(true)}
+          />
+        ) : (
+          <>
+            <div className="title-emoji">🏝️✨</div>
+            <h1 className="title-main">まなびモンスターズ</h1>
+            <p className="title-sub">〜 3年生のひみつ島 〜</p>
+          </>
+        )}
       </div>
 
       <p className="title-description">

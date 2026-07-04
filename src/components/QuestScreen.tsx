@@ -1,10 +1,13 @@
 import { useMemo, useState } from 'react';
-import type { Quest, Question } from '../types/game';
+import type { CSSProperties } from 'react';
+import type { Area, Quest, Question } from '../types/game';
 import { findQuestion } from '../data/questions';
 import { shuffledIndices } from '../utils/shuffle';
+import { publicAssetUrl } from '../utils/assets';
 import { QuizCard } from './QuizCard';
 
 interface Props {
+  area: Area;
   quest: Quest;
   onFinish: (correctCount: number, totalCount: number, earnedCoins: number, earnedExp: number) => void;
   onBack: () => void;
@@ -17,7 +20,7 @@ function drawQuestions(pool: Question[], count?: number): Question[] {
   return order.slice(0, drawCount).map((i) => pool[i]);
 }
 
-export function QuestScreen({ quest, onFinish, onBack }: Props) {
+export function QuestScreen({ area, quest, onFinish, onBack }: Props) {
   const pool = useMemo<Question[]>(
     () =>
       quest.questionIds
@@ -33,6 +36,10 @@ export function QuestScreen({ quest, onFinish, onBack }: Props) {
   const [correctCount, setCorrectCount] = useState(0);
   const [earnedCoins, setEarnedCoins] = useState(0);
   const [earnedExp, setEarnedExp] = useState(0);
+  const backgroundImageUrl = publicAssetUrl(area.backgroundImage);
+  const backgroundStyle = backgroundImageUrl
+    ? ({ '--area-bg-image': `url("${backgroundImageUrl}")` } as CSSProperties)
+    : undefined;
 
   const startQuiz = () => {
     setQuizQuestions(drawQuestions(pool, quest.questionCount));
@@ -62,7 +69,7 @@ export function QuestScreen({ quest, onFinish, onBack }: Props) {
   if (phase === 'intro') {
     const count = Math.min(quest.questionCount ?? pool.length, pool.length);
     return (
-      <div className="screen quest-screen">
+      <div className="screen quest-screen area-background-screen" style={backgroundStyle}>
         <div className="card quest-intro-card">
           <div className="quest-emoji">{quest.emoji ?? '🗝️💎'}</div>
           <h2 className="quest-title">{quest.name}</h2>
@@ -88,7 +95,7 @@ export function QuestScreen({ quest, onFinish, onBack }: Props) {
 
   const question = quizQuestions[currentIndex];
   return (
-    <div className="screen quest-screen">
+    <div className="screen quest-screen area-background-screen" style={backgroundStyle}>
       <QuizCard
         key={question.id}
         question={question}

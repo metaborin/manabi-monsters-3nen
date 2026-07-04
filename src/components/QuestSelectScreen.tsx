@@ -1,5 +1,7 @@
+import type { CSSProperties } from 'react';
 import type { Area, Quest } from '../types/game';
 import { SUBJECT_LABELS } from '../types/game';
+import { publicAssetUrl } from '../utils/assets';
 
 interface Props {
   area: Area;
@@ -10,8 +12,13 @@ interface Props {
 }
 
 export function QuestSelectScreen({ area, quests, clearedQuestIds, onSelectQuest, onBack }: Props) {
+  const backgroundImageUrl = publicAssetUrl(area.backgroundImage);
+  const backgroundStyle = backgroundImageUrl
+    ? ({ '--area-bg-image': `url("${backgroundImageUrl}")` } as CSSProperties)
+    : undefined;
+
   return (
-    <div className="screen quest-select-screen">
+    <div className="screen quest-select-screen area-background-screen" style={backgroundStyle}>
       <header className="home-header">
         <h2 className="home-title">
           {area.emoji} {area.name}

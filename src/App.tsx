@@ -110,9 +110,10 @@ export default function App() {
     );
   }
 
-  if (screen === 'quest' && currentQuest) {
+  if (screen === 'quest' && currentQuest && currentArea) {
     return (
       <QuestScreen
+        area={currentArea}
         key={currentQuest.id}
         quest={currentQuest}
         onFinish={handleQuestFinish}

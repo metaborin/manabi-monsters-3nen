@@ -16,6 +16,8 @@ export interface Area {
   name: string;
   subject: Subject;
   emoji: string;
+  cardImage?: string;
+  backgroundImage?: string;
   description: string;
   available: boolean;
   /** クエスト選択画面に出すエリアらしいあいさつ文（省略時は汎用文） */

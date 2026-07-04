@@ -741,6 +741,134 @@ label {
   color: #3d8f4e;
 }
 
+/* ===== クエスト（ステージ）カード v0.8.3 ===== */
+
+.quest-stage-card {
+  position: relative;
+  border: 3px solid transparent;
+  padding-top: 22px;
+}
+
+.quest-stage-recommended {
+  border-color: #ff9a3d;
+  box-shadow: 0 0 0 3px rgba(255, 179, 58, 0.28), 0 6px 16px rgba(80, 120, 200, 0.18);
+}
+
+.quest-stage-cleared {
+  border-color: #8fdb7c;
+  background: #f4fbf1;
+}
+
+.quest-stage-new {
+  border-color: #ffd976;
+}
+
+/* 右上の状態バッジ */
+.quest-stage-badge {
+  position: absolute;
+  top: -12px;
+  right: 16px;
+  font-size: 14px;
+  font-weight: bold;
+  border-radius: 999px;
+  padding: 5px 14px;
+  z-index: 2;
+}
+
+.quest-stage-badge-quest-stage-recommended {
+  color: #ffffff;
+  background: linear-gradient(180deg, #ff9a3d, #ff7a1a);
+  box-shadow: 0 2px 6px rgba(255, 122, 26, 0.45);
+  animation: corner-pop 1.4s ease-in-out infinite;
+}
+
+.quest-stage-badge-quest-stage-new {
+  color: #ffffff;
+  background: #ffb43a;
+  box-shadow: 0 2px 6px rgba(255, 160, 40, 0.4);
+}
+
+.quest-stage-badge-quest-stage-cleared {
+  color: #ffffff;
+  background: #52c164;
+  box-shadow: 0 2px 6px rgba(60, 150, 80, 0.35);
+}
+
+.quest-stage-number {
+  display: inline-block;
+  font-size: 14px;
+  font-weight: bold;
+  color: #7a86a5;
+}
+
+/* 報酬エリア */
+.quest-reward-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  background: #f7f9ff;
+  border-radius: 16px;
+  padding: 12px 14px;
+}
+
+.quest-reward-item {
+  flex: 1 1 44%;
+  min-width: 140px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.quest-reward-monster {
+  gap: 10px;
+}
+
+.quest-reward-monster-text {
+  min-width: 0;
+}
+
+.quest-reward-monster-text .quest-reward-value {
+  font-size: 15px;
+  line-height: 1.3;
+}
+
+.quest-reward-label {
+  font-size: 13px;
+  color: #7a86a5;
+}
+
+.quest-reward-value {
+  font-size: 16px;
+  font-weight: bold;
+  color: #3a3a55;
+}
+
+.quest-reward-item:not(.quest-reward-monster) {
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 2px;
+}
+
+.quest-reward-monster-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.quest-reward-monster-image {
+  width: 46px;
+  height: 46px;
+  object-fit: contain;
+  flex-shrink: 0;
+  filter: drop-shadow(0 3px 4px rgba(86, 95, 130, 0.18));
+}
+
+.quest-reward-monster-emoji {
+  font-size: 38px;
+  flex-shrink: 0;
+}
+
 /* ===== レベルアップ演出 ===== */
 
 .levelup-banner {

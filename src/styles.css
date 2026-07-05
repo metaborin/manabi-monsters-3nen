@@ -1057,8 +1057,9 @@ label {
 /* 報酬エリア */
 .quest-reward-row {
   display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
   background: #f7f9ff;
   border-radius: 16px;
   padding: 12px 14px;
@@ -1120,6 +1121,310 @@ label {
 .quest-reward-monster-emoji {
   font-size: 38px;
   flex-shrink: 0;
+}
+
+/* ===== クエスト状態バッジ・報酬プレート（画像素材・v0.8.7） =====
+   すべて「画像を絶対配置で背景にし、文字はHTMLで上に載せる」方式。
+   画像が2:1（512x256）なので aspect-ratio: 2/1 でゆがまず表示する。 */
+
+.quest-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 6px 8px;
+}
+
+/* --- 状態バッジ（NEW / おすすめ / クリア済み） --- */
+.quest-state-badge {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: clamp(112px, 31vw, 138px);
+  aspect-ratio: 2 / 1;
+  flex-shrink: 0;
+}
+
+.quest-state-badge-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.quest-state-badge-inner {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  max-width: 92%;
+}
+
+.quest-state-badge-icon {
+  width: clamp(19px, 5vw, 24px);
+  height: clamp(19px, 5vw, 24px);
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.quest-state-badge-text {
+  font-size: clamp(12.5px, 3.3vw, 14.5px);
+  font-weight: 800;
+  line-height: 1;
+  white-space: nowrap;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+.quest-state-new .quest-state-badge-text {
+  color: #c8452e;
+}
+.quest-state-recommended .quest-state-badge-text {
+  color: #cf7500;
+}
+.quest-state-cleared .quest-state-badge-text {
+  color: #2f8b3e;
+}
+
+/* 画像が読めないときの塗りバッジ（従来スタイル相当） */
+.quest-state-badge-plain {
+  width: auto;
+  aspect-ratio: auto;
+  padding: 6px 14px;
+  border-radius: 999px;
+  box-shadow: 0 2px 6px rgba(60, 80, 120, 0.22);
+}
+.quest-state-badge-plain.quest-state-new {
+  background: #ffb43a;
+}
+.quest-state-badge-plain.quest-state-recommended {
+  background: linear-gradient(180deg, #ff9a3d, #ff7a1a);
+}
+.quest-state-badge-plain.quest-state-cleared {
+  background: #52c164;
+}
+.quest-state-badge-plain .quest-state-badge-text {
+  color: #ffffff;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.22);
+}
+
+/* --- ステージ番号プレート --- */
+.quest-stage-plate {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: clamp(140px, 40vw, 168px);
+  aspect-ratio: 2 / 1;
+  flex-shrink: 0;
+}
+
+.quest-stage-plate-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.quest-stage-plate-text {
+  position: relative;
+  z-index: 1;
+  font-size: clamp(12px, 3.1vw, 14px);
+  font-weight: 700;
+  color: #6a5024;
+  line-height: 1;
+  white-space: nowrap;
+}
+.quest-stage-plate-text strong {
+  font-size: 1.35em;
+  color: #c9761b;
+  margin-left: 3px;
+}
+
+.quest-stage-plate-plain {
+  width: auto;
+  aspect-ratio: auto;
+  padding: 4px 14px;
+  border-radius: 999px;
+  background: #eef3fb;
+  color: #5a6a8a;
+  font-weight: 700;
+}
+.quest-stage-plate-plain strong {
+  color: #3d6ca8;
+}
+
+/* --- コイン報酬プレート --- */
+.quest-coin-reward {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: clamp(172px, 54vw, 208px);
+  height: clamp(58px, 15.5vw, 68px);
+}
+
+.quest-coin-reward-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  z-index: 0;
+  pointer-events: none;
+  border-radius: 12px;
+}
+
+.quest-coin-reward-inner {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  /* 左のメダル装飾を避けて cream 帯に載せる */
+  padding-left: 22%;
+  padding-right: 8%;
+}
+
+.quest-coin-reward-icon {
+  width: clamp(25px, 6.8vw, 32px);
+  height: clamp(25px, 6.8vw, 32px);
+  object-fit: contain;
+  flex-shrink: 0;
+  filter: drop-shadow(0 2px 2px rgba(120, 90, 20, 0.28));
+}
+.quest-coin-reward-emoji {
+  font-size: clamp(23px, 6.2vw, 28px);
+  flex-shrink: 0;
+}
+
+.quest-coin-reward-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.05;
+  min-width: 0;
+}
+.quest-coin-reward-value {
+  font-size: clamp(17px, 4.6vw, 20px);
+  font-weight: 800;
+  color: #a8600c;
+}
+.quest-coin-reward-value.is-cleared {
+  font-size: clamp(13px, 3.6vw, 15px);
+  color: #7f8a6a;
+}
+.quest-coin-unit {
+  font-size: 0.66em;
+  margin-left: 2px;
+  font-weight: 700;
+}
+
+/* 画像が読めないときのコイン表示 */
+.quest-coin-reward-plain {
+  width: auto;
+  height: auto;
+  padding: 8px 14px;
+  border-radius: 12px;
+  background: #fff5d8;
+  box-shadow: inset 0 0 0 2px rgba(220, 170, 40, 0.35);
+}
+.quest-coin-reward-plain .quest-coin-reward-inner {
+  padding: 0;
+}
+
+/* --- 仲間モンスター報酬 --- */
+.quest-friend-reward {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.quest-friend-frame {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: clamp(60px, 17vw, 74px);
+  aspect-ratio: 1;
+  flex-shrink: 0;
+}
+.quest-friend-frame-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  z-index: 1;
+  pointer-events: none;
+}
+.quest-friend-monster-image {
+  position: relative;
+  z-index: 0;
+  width: 58%;
+  height: 58%;
+  object-fit: contain;
+}
+.quest-friend-monster-emoji {
+  position: relative;
+  z-index: 0;
+  font-size: clamp(26px, 7vw, 32px);
+  line-height: 1;
+}
+/* 枠画像が読めないときの丸フレーム */
+.quest-friend-frame-plain {
+  border-radius: 999px;
+  background: radial-gradient(circle at 50% 42%, #ffffff, #eaf3ff);
+  box-shadow: 0 0 0 3px rgba(120, 180, 90, 0.55), 0 3px 8px rgba(80, 120, 200, 0.18);
+}
+
+.quest-friend-text {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
+}
+.quest-friend-name {
+  font-size: clamp(14px, 4vw, 16px);
+  font-weight: 800;
+  color: #3a3a55;
+  overflow-wrap: anywhere;
+}
+.quest-friend-state {
+  font-size: clamp(12px, 3.4vw, 14px);
+  font-weight: 700;
+  color: #cf7500;
+}
+.quest-friend-state.is-cleared {
+  color: #2f8b3e;
+}
+
+/* 共通の小さいラベル（ほうしゅう / なかま） */
+.quest-reward-caption {
+  font-size: 11px;
+  font-weight: 700;
+  color: #8a93ad;
+  letter-spacing: 0.02em;
+}
+.quest-coin-reward .quest-reward-caption {
+  color: #9a7b3a;
+}
+
+/* れんしゅうクエスト（仲間なし） */
+.quest-reward-practice {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.quest-reward-practice-value {
+  font-size: 15px;
+  font-weight: 700;
+  color: #6a7590;
 }
 
 /* ===== レベルアップ演出 ===== */

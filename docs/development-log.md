@@ -159,3 +159,28 @@ v0.8.4で追加したタイトルロゴ画像（public/assets/title/title_logo.p
   ※ prepared 配下の試作素材一式・確認用HTMLはコミットに含めていない。
 保存データ構造・保存キー・各種ID（クエスト／問題／モンスター／ショップアイテム）・Vite base
 （/manabi-monsters-3nen/）・PWA設定・Service Worker・manifest・アイコンは変更なし。
+
+## v0.8.7
+クエスト選択画面のクエストカードを、用意済み画像素材で強化してゲームらしくした。
+- 状態バッジ（NEW／おすすめ／クリア済み）：バッジ背景画像＋小型状態アイコン＋HTML文字。
+  文字は画像に頼らず必ずHTML/CSSで表示（NEW／おすすめ／クリア済み）。
+- ステージ番号：stage_number_plate 画像のプレートに「ステージ N」を表示。
+- 報酬コイン：coin_reward_plate＋reward_coin_icon で「ほうしゅう ○○コイン」を表示。
+  クリア済みは「受取ずみ」。既存のコイン計算（getQuestRewardCoins）はそのまま利用。
+- 仲間モンスター：friend_reward_frame の円フレームに既存モンスター画像を入れて表示。
+  状態文は「クリアで なかま」／クリア済みは「✅ なかま」。仲間なしのクエストは従来どおり
+  「れんしゅうクエスト」。画像フォールバックは モンスター画像→reward_friend_monster_icon→絵文字。
+- 実装は新規 src/components/QuestCardParts.tsx（QuestStateBadge / QuestStagePlate /
+  QuestCoinReward / QuestFriendReward）にまとめ、QuestSelectScreen から利用。
+  各パーツは画像onErrorでCSS/絵文字フォールバックし、素材が無くても表示が壊れない。
+- 状態判定ロジック（未クリアの先頭＝おすすめ、clearedQuestIds でクリア判定）は変更なし。
+  「つづき」バッジ・ボス・イベントは今回未対応。
+- スマホ：報酬は縦積み、プレート幅はCSS clampで可変。375px幅で横スクロールなしを確認。
+使用素材（prepared→安定保存先へ _sample を外してコピー）：
+  public/assets/quest-ui/badges/{badge_new_bg,badge_recommended_bg,badge_clear_bg}.png
+  public/assets/quest-ui/icons/{icon_new_state,icon_recommended_state,icon_clear_state,
+    reward_coin_icon,reward_friend_monster_icon}.png
+  public/assets/quest-ui/ui/{stage_number_plate,coin_reward_plate,friend_reward_frame}.png
+  ※ prepared 配下の試作素材一式・docs/previews・docs/image-prompts はコミットに含めていない。
+保存データ構造・保存キー・各種ID・Vite base（/manabi-monsters-3nen/）・PWA設定・
+Service Worker・manifest・アイコン・島マップの挙動は変更なし。

@@ -16,8 +16,10 @@ interface Props {
   onUseHint: () => void;
   /** やりなおしチケットの所持数 */
   retryCount: number;
-  /** やりなおしチケットを1つつかう（親で所持数を減らす） */
+  /** やりなおしチケットを1つつかう（親で所持数を減らす＆ハートをもどす） */
   onUseRetry: () => void;
+  /** まちがえた選択肢を選んだとき（親でハートを1つ減らす）。v0.9.1 */
+  onWrongAnswer: () => void;
 }
 
 export function QuizCard({
@@ -31,6 +33,7 @@ export function QuizCard({
   onUseHint,
   retryCount,
   onUseRetry,
+  onWrongAnswer,
 }: Props) {
   // 表示順をシャッフル（マウントごとに変わるので、やり直すたびに順番が変わる）
   const [choiceOrder] = useState<number[]>(() => shuffledIndices(question.choices.length));
@@ -46,6 +49,13 @@ export function QuizCard({
     if (originalIndex === question.answerIndex) return 'choice-btn choice-correct';
     if (originalIndex === selectedIndex) return 'choice-btn choice-wrong';
     return 'choice-btn choice-faded';
+  };
+
+  // 選択肢を選ぶ。まちがいならハートを1つ減らす（親に通知）
+  const handleSelect = (originalIndex: number) => {
+    if (answered) return;
+    setSelectedIndex(originalIndex);
+    if (originalIndex !== question.answerIndex) onWrongAnswer();
   };
 
   const handleUseHint = () => {
@@ -85,7 +95,7 @@ export function QuizCard({
           <button
             key={originalIndex}
             className={choiceClass(originalIndex)}
-            onClick={() => !answered && setSelectedIndex(originalIndex)}
+            onClick={() => handleSelect(originalIndex)}
             disabled={answered}
           >
             {question.choices[originalIndex]}
@@ -99,6 +109,14 @@ export function QuizCard({
             {wasCorrect ? '🎉 ピンポン！せいかい！' : '😊 ざんねん！つぎはできるよ！'}
           </p>
           <p className="feedback-explanation">{question.explanation}</p>
+
+          {/* まちがえたとき：ハートが1つへったことをやさしく伝える */}
+          {!wasCorrect && (
+            <p className="feedback-heart-loss">
+              💔 ハートが1つへったよ。
+              {retryCount > 0 ? 'やりなおしチケットをつかうと ハートがもどるよ。' : 'つぎもがんばろう！'}
+            </p>
+          )}
 
           {/* まちがえたとき、やりなおしチケットがあれば1回やりなおせる */}
           {!wasCorrect && retryCount > 0 && (

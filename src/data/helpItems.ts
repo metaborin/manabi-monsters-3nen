@@ -12,9 +12,14 @@ export const HINT_CANDY_ID = 'item_hint_candy';
 export const RETRY_TICKET_ID = 'item_retry_ticket';
 /** コインアップスター：クリアのごほうびコインが少し増える */
 export const COIN_STAR_ID = 'item_coin_star';
+/** ハートクッキー：クエスト中にハートを1つ回復する（v0.9.1） */
+export const HEART_COOKIE_ID = 'item_heart_cookie';
 
 /** コインアップスターで増えるコイン数 */
 export const COIN_STAR_BONUS = 5;
+
+/** 1クエストの最大ハート数（v0.9.1） */
+export const MAX_HEARTS = 3;
 
 /** 問題にヒントが無いときの共通ヒント（小学3年生向け） */
 export const DEFAULT_HINT = 'よく考えてみよう！';
@@ -46,6 +51,15 @@ export const HELP_ITEMS: ShopItem[] = [
     category: 'たすけ',
     emoji: '⭐',
     image: 'assets/items/item_coin_star_512.png',
+  },
+  {
+    id: HEART_COOKIE_ID,
+    name: 'ハートクッキー',
+    price: 20,
+    description: 'クエスト中に、ハートを1つ かいふくできるよ。',
+    category: 'たすけ',
+    emoji: '🍪',
+    image: 'assets/items/item_heart_cookie_512.png',
   },
 ];
 

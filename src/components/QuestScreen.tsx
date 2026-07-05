@@ -6,7 +6,9 @@ import {
   HINT_CANDY_ID,
   RETRY_TICKET_ID,
   COIN_STAR_ID,
+  HEART_COOKIE_ID,
   COIN_STAR_BONUS,
+  MAX_HEARTS,
   DEFAULT_HINT,
 } from '../data/helpItems';
 import { shuffledIndices } from '../utils/shuffle';
@@ -30,6 +32,55 @@ interface Props {
   onBack: () => void;
 }
 
+const HEART_FULL_URL = publicAssetUrl('assets/ui/ui_heart_full_512.png');
+const HEART_EMPTY_URL = publicAssetUrl('assets/ui/ui_heart_empty_512.png');
+const FAIL_ICON_URL = publicAssetUrl('assets/ui/ui_failure_icon_512.png');
+
+/** ハート1つ（画像→絵文字フォールバック） */
+function HeartIcon({ full }: { full: boolean }) {
+  const [failed, setFailed] = useState(false);
+  const url = full ? HEART_FULL_URL : HEART_EMPTY_URL;
+  if (url && !failed) {
+    return (
+      <img
+        className="quest-heart"
+        src={url}
+        alt=""
+        aria-hidden="true"
+        decoding="async"
+        onError={() => setFailed(true)}
+      />
+    );
+  }
+  return (
+    <span className="quest-heart quest-heart-emoji" aria-hidden="true">
+      {full ? '❤️' : '🤍'}
+    </span>
+  );
+}
+
+/** 失敗画面のアイコン（画像→絵文字フォールバック） */
+function FailIcon() {
+  const [failed, setFailed] = useState(false);
+  if (FAIL_ICON_URL && !failed) {
+    return (
+      <img
+        className="quest-fail-icon"
+        src={FAIL_ICON_URL}
+        alt=""
+        aria-hidden="true"
+        decoding="async"
+        onError={() => setFailed(true)}
+      />
+    );
+  }
+  return (
+    <span className="quest-fail-icon quest-fail-icon-emoji" aria-hidden="true">
+      🌱
+    </span>
+  );
+}
+
 /** プールからランダムな順で count 問えらぶ（count 省略時は全問） */
 function drawQuestions(pool: Question[], count?: number): Question[] {
   const order = shuffledIndices(pool.length);
@@ -46,7 +97,7 @@ export function QuestScreen({ area, quest, itemCounts, onConsumeItem, onFinish, 
     [quest],
   );
 
-  const [phase, setPhase] = useState<'intro' | 'quiz'>('intro');
+  const [phase, setPhase] = useState<'intro' | 'quiz' | 'failed'>('intro');
   // クエスト開始のたびにシャッフルして出題順を決める
   const [quizQuestions, setQuizQuestions] = useState<Question[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -55,6 +106,8 @@ export function QuestScreen({ area, quest, itemCounts, onConsumeItem, onFinish, 
   const [earnedExp, setEarnedExp] = useState(0);
   // コインアップスターをこのクエストでつかっているか
   const [coinBoost, setCoinBoost] = useState(false);
+  // 残りハート（このクエストだけの一時状態。保存はしない）
+  const [hearts, setHearts] = useState(MAX_HEARTS);
   const backgroundImageUrl = publicAssetUrl(area.backgroundImage);
   const backgroundStyle = backgroundImageUrl
     ? ({ '--area-bg-image': `url("${backgroundImageUrl}")` } as CSSProperties)
@@ -63,7 +116,9 @@ export function QuestScreen({ area, quest, itemCounts, onConsumeItem, onFinish, 
   const hintCount = itemCounts[HINT_CANDY_ID] ?? 0;
   const retryCount = itemCounts[RETRY_TICKET_ID] ?? 0;
   const coinStarCount = itemCounts[COIN_STAR_ID] ?? 0;
-  const hasAnyHelp = hintCount > 0 || retryCount > 0 || coinStarCount > 0 || coinBoost;
+  const heartCookieCount = itemCounts[HEART_COOKIE_ID] ?? 0;
+  const hasAnyHelp =
+    hintCount > 0 || retryCount > 0 || coinStarCount > 0 || heartCookieCount > 0 || coinBoost;
 
   const startQuiz = () => {
     setQuizQuestions(drawQuestions(pool, quest.questionCount));
@@ -71,7 +126,15 @@ export function QuestScreen({ area, quest, itemCounts, onConsumeItem, onFinish, 
     setCorrectCount(0);
     setEarnedCoins(0);
     setEarnedExp(0);
+    setHearts(MAX_HEARTS);
     setPhase('quiz');
+  };
+
+  // 失敗後に、同じクエストをもう一度あそぶ
+  const restartQuest = () => {
+    setCoinBoost(false);
+    setHearts(MAX_HEARTS);
+    setPhase('intro');
   };
 
   const useCoinStar = () => {
@@ -80,7 +143,28 @@ export function QuestScreen({ area, quest, itemCounts, onConsumeItem, onFinish, 
     setCoinBoost(true);
   };
 
+  // ハートクッキー：ハートを1つ回復（最大を超えない）
+  const useHeartCookie = () => {
+    if (heartCookieCount <= 0 || hearts >= MAX_HEARTS) return;
+    onConsumeItem(HEART_COOKIE_ID);
+    setHearts((h) => Math.min(MAX_HEARTS, h + 1));
+  };
+
+  // まちがえたとき：ハートを1つ減らす
+  const loseHeart = () => setHearts((h) => Math.max(0, h - 1));
+  // やりなおしチケットをつかったとき：そのまちがい分のハートをもどす
+  const useRetryTicket = () => {
+    onConsumeItem(RETRY_TICKET_ID);
+    setHearts((h) => Math.min(MAX_HEARTS, h + 1));
+  };
+
   const handleNext = (wasCorrect: boolean) => {
+    // ハートが0なら、このクエストは失敗（クリア扱いにしない）
+    if (hearts <= 0) {
+      setPhase('failed');
+      return;
+    }
+
     const question = quizQuestions[currentIndex];
     const nextCorrect = correctCount + (wasCorrect ? 1 : 0);
     const nextCoins = earnedCoins + (wasCorrect ? question.rewardCoins : 0);
@@ -112,6 +196,9 @@ export function QuestScreen({ area, quest, itemCounts, onConsumeItem, onFinish, 
             ))}
           </p>
           <p className="quest-count">もんだいすう：{count}問</p>
+          <p className="quest-heart-intro">
+            ❤️ ハートは {MAX_HEARTS}つ。まちがえると1つへるよ。0になるまでがんばろう！
+          </p>
 
           {/* つかうアイテム（たすけアイテム） */}
           <div className="quest-help-panel">
@@ -141,6 +228,12 @@ export function QuestScreen({ area, quest, itemCounts, onConsumeItem, onFinish, 
                     <span className="quest-help-note">まちがえたときつかえるよ</span>
                   </div>
                 )}
+                {heartCookieCount > 0 && (
+                  <div className="quest-help-chip">
+                    🍪 ハートクッキー ×{heartCookieCount}
+                    <span className="quest-help-note">ハートをかいふくできるよ</span>
+                  </div>
+                )}
               </div>
             ) : (
               <p className="quest-help-empty">ショップで「たすけアイテム」を買うとつかえるよ。</p>
@@ -158,9 +251,46 @@ export function QuestScreen({ area, quest, itemCounts, onConsumeItem, onFinish, 
     );
   }
 
+  if (phase === 'failed') {
+    return (
+      <div className="screen quest-screen area-background-screen" style={backgroundStyle}>
+        <div className="card quest-fail-card">
+          <FailIcon />
+          <h2 className="quest-fail-title">ハートがなくなっちゃった</h2>
+          <p className="quest-fail-message">
+            だいじょうぶ！もういちど ちょうせんしよう！
+            <br />
+            まちがえた問題は、かいせつを読むとつぎにいかせるよ。
+          </p>
+          <button className="btn btn-primary btn-big" onClick={restartQuest}>
+            🔁 もういちど
+          </button>
+          <button className="btn btn-plain btn-small" onClick={onBack}>
+            🗺️ エリアにもどる
+          </button>
+        </div>
+      </div>
+    );
+  }
+
   const question = quizQuestions[currentIndex];
   return (
     <div className="screen quest-screen area-background-screen" style={backgroundStyle}>
+      {/* ハートバー */}
+      <div className="quest-heart-bar">
+        <span className="quest-heart-label">ハート</span>
+        <div className="quest-heart-icons">
+          {Array.from({ length: MAX_HEARTS }).map((_, i) => (
+            <HeartIcon key={i} full={i < hearts} />
+          ))}
+        </div>
+        {hearts < MAX_HEARTS && heartCookieCount > 0 && (
+          <button className="btn quest-heart-heal-btn" onClick={useHeartCookie}>
+            🍪 ハートかいふく（のこり {heartCookieCount}）
+          </button>
+        )}
+      </div>
+
       <QuizCard
         key={question.id}
         question={question}
@@ -172,7 +302,8 @@ export function QuestScreen({ area, quest, itemCounts, onConsumeItem, onFinish, 
         hintCount={hintCount}
         onUseHint={() => onConsumeItem(HINT_CANDY_ID)}
         retryCount={retryCount}
-        onUseRetry={() => onConsumeItem(RETRY_TICKET_ID)}
+        onUseRetry={useRetryTicket}
+        onWrongAnswer={loseHeart}
       />
       {coinBoost && (
         <div className="quest-boost-banner">⭐ コインアップちゅう！クリアで +{COIN_STAR_BONUS}コイン</div>

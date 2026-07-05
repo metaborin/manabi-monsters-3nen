@@ -43,12 +43,13 @@ export const MONSTERS: Monster[] = [
   },
 
   // ===== v0.8.8 追加：各教科2つ目クエストの仲間モンスター =====
-  // 画像素材はまだ無いので image は未指定（emoji fallback で表示）。
+  // v0.8.9 で画像を追加（emoji は画像読み込み失敗時の fallback として維持）。
   {
     id: 'mon_tsunagumo',
     name: 'ツナグモン',
     subject: 'kokugo',
     emoji: '☁️',
+    image: 'assets/monsters/mon_tsunagumo_512.png',
     description: '文のつながりを見つけるのが得意。ことばの橋をふわっとかけてくれる。',
   },
   {
@@ -56,6 +57,7 @@ export const MONSTERS: Monster[] = [
     name: 'アマリス',
     subject: 'sansu',
     emoji: '🌰',
+    image: 'assets/monsters/mon_amarisu_512.png',
     description: 'わり切れない数を見つけるのが得意。あまりも大切な答えだと教えてくれる。',
   },
   {
@@ -63,6 +65,7 @@ export const MONSTERS: Monster[] = [
     name: 'カゲピカ',
     subject: 'rika',
     emoji: '💧',
+    image: 'assets/monsters/mon_kagepika_512.png',
     description: '太陽の向きとかげの形を調べるのが好き。晴れた日の発見を教えてくれる。',
   },
   {
@@ -70,6 +73,7 @@ export const MONSTERS: Monster[] = [
     name: 'マーカメ',
     subject: 'shakai',
     emoji: '🧭',
+    image: 'assets/monsters/mon_markame_512.png',
     description: '方位や地図記号を見つけるのが得意。しるしをたよりに町の場所を案内してくれる。',
   },
   {
@@ -77,6 +81,7 @@ export const MONSTERS: Monster[] = [
     name: 'コロリン',
     subject: 'eigo',
     emoji: '🎨',
+    image: 'assets/monsters/mon_cololing_512.png',
     description: '色の英語を覚えるのが大好き。カラフルな言葉で友だちを増やしてくれる。',
   },
 ];

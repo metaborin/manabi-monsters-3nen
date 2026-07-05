@@ -41,6 +41,44 @@ export const MONSTERS: Monster[] = [
     image: 'assets/monsters/mon_halolin_512.png',
     description: 'あいさつが得意な小さな妖精モンスター。英語で友だちを作るのが好き。',
   },
+
+  // ===== v0.8.8 追加：各教科2つ目クエストの仲間モンスター =====
+  // 画像素材はまだ無いので image は未指定（emoji fallback で表示）。
+  {
+    id: 'mon_tsunagumo',
+    name: 'ツナグモン',
+    subject: 'kokugo',
+    emoji: '☁️',
+    description: '文のつながりを見つけるのが得意。ことばの橋をふわっとかけてくれる。',
+  },
+  {
+    id: 'mon_amarisu',
+    name: 'アマリス',
+    subject: 'sansu',
+    emoji: '🌰',
+    description: 'わり切れない数を見つけるのが得意。あまりも大切な答えだと教えてくれる。',
+  },
+  {
+    id: 'mon_kagepika',
+    name: 'カゲピカ',
+    subject: 'rika',
+    emoji: '💧',
+    description: '太陽の向きとかげの形を調べるのが好き。晴れた日の発見を教えてくれる。',
+  },
+  {
+    id: 'mon_markame',
+    name: 'マーカメ',
+    subject: 'shakai',
+    emoji: '🧭',
+    description: '方位や地図記号を見つけるのが得意。しるしをたよりに町の場所を案内してくれる。',
+  },
+  {
+    id: 'mon_cololing',
+    name: 'コロリン',
+    subject: 'eigo',
+    emoji: '🎨',
+    description: '色の英語を覚えるのが大好き。カラフルな言葉で友だちを増やしてくれる。',
+  },
 ];
 
 export function findMonster(id: string): Monster | undefined {

@@ -42,7 +42,7 @@ export function IslandScreen({ player, onBack, onOpenShop }: Props) {
         </div>
       ) : dexComplete ? (
         <div className="card island-flag-hint island-flag-hint-ready">
-          🎉 5体のモンスターがそろったよ！ショップで記念の旗を手に入れよう！
+          🎉 {MONSTERS.length}体のモンスターがそろったよ！ショップで記念の旗を手に入れよう！
         </div>
       ) : (
         <div className="card island-flag-hint">

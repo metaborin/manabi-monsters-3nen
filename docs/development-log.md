@@ -184,3 +184,31 @@ v0.8.4で追加したタイトルロゴ画像（public/assets/title/title_logo.p
   ※ prepared 配下の試作素材一式・docs/previews・docs/image-prompts はコミットに含めていない。
 保存データ構造・保存キー・各種ID・Vite base（/manabi-monsters-3nen/）・PWA設定・
 Service Worker・manifest・アイコン・島マップの挙動は変更なし。
+
+## v0.8.8
+各教科に2つ目のクエストを1つずつ追加（データ追記が中心）。既存クエスト・問題・モンスターは変更なし。
+- 追加クエスト（各3問構成、報酬コイン30・経験値15が最大）：
+  国語 quest_connect_words_bridge（つなぎ言葉）→ mon_tsunagumo
+  算数 quest_remainder_river（あまりのあるわり算）→ mon_amarisu
+  理科 quest_sun_shadow_watch（太陽とかげ）→ mon_kagepika
+  社会 quest_map_symbols_square（地図の見方）→ mon_markame
+  英語 quest_color_words_beach（色の英語）→ mon_cololing
+- 追加問題15問（各 rewardCoins:10 / rewardExp:5）：
+  japanese_connect_words_001〜003 / math_remainder_division_001〜003 /
+  science_sun_shadow_001〜003 / social_map_symbols_001〜003 / english_color_words_001〜003
+- 追加モンスター5体（画像なし＝emoji fallback）：
+  mon_tsunagumo(☁️) / mon_amarisu(🌰) / mon_kagepika(💧) / mon_markame(🧭) / mon_cololing(🎨)
+- レビュー指摘の反映：
+  ・算数の解説に「あまりは割る数より小さい（1○○に入れる□より少ない）」の補足を追加。
+  ・英語の問題1は既存 english_greeting_004（赤→Red）と重なるため red→green に差し替え。
+  ・社会 mon_markame は既存 mon_chizumon と印象が近いので、emoji を 🧭 にし、説明文で
+    「方位や地図記号」「しるしをたよりに」とコンパス・地図記号感を強めて差別化。
+  ・国語 002 は「長く走ることは」に自然化。
+- 図鑑完成表示の追従：モンスターが5→10体になるため、ハードコードだった「5体」表記を
+  MONSTERS.length に置き換え（ShopScreen の「○体そろえてね／○体そろうと買えるよ」、
+  IslandScreen の「○体のモンスターがそろったよ」）。判定は従来どおり MONSTERS.every(...)。
+  ※「5教科」の表記（島の旗の説明）は教科数のままなので変更なし。
+- v0.8.7 のクエストカードUI（状態バッジ／ステージ番号／報酬コイン／仲間モンスター）は
+  データ追記だけで新クエストにもそのまま適用。ステージ番号は area 内の並び順どおり表示。
+保存データ構造・保存キー・既存ID・PlayerState・Vite base（/manabi-monsters-3nen/）・
+PWA設定・Service Worker・manifest・アイコン・島マップ・クエスト画面の挙動は変更なし。

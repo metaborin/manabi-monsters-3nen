@@ -82,7 +82,7 @@ export interface ShopItem {
   description: string;
   category: string;
   emoji: string;
-  /** true のとき、5体コンプリートするまで購入できない */
+  /** true のとき、図鑑をコンプリートするまで購入できない */
   requiresDexComplete?: boolean;
 }
 

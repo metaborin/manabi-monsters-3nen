@@ -118,6 +118,83 @@ export const QUESTS: Quest[] = [
     ],
     rewardMonsterId: 'mon_halolin',
   },
+
+  // ===== v0.8.8 追加：各教科の2つ目クエスト（3問構成） =====
+  {
+    id: 'quest_connect_words_bridge',
+    areaId: 'area_kokugo',
+    name: 'つなぎ言葉の橋をわたろう',
+    unit: 'つなぎ言葉',
+    emoji: '🌉🔗',
+    description:
+      'つなぎ言葉を選んで、ことばの橋をわたろう。\n文と文のつながりを見つけると、ツナグモンが近くに来るよ。',
+    questionIds: [
+      'japanese_connect_words_001',
+      'japanese_connect_words_002',
+      'japanese_connect_words_003',
+    ],
+    rewardMonsterId: 'mon_tsunagumo',
+  },
+  {
+    id: 'quest_remainder_river',
+    areaId: 'area_sansu',
+    name: 'あまりの川をこえよう',
+    unit: 'あまりのあるわり算',
+    emoji: '🌊➗',
+    description:
+      'あまりのあるわり算に挑戦して、川をこえよう。\nあまりも大切な答えだよ。',
+    questionIds: [
+      'math_remainder_division_001',
+      'math_remainder_division_002',
+      'math_remainder_division_003',
+    ],
+    rewardMonsterId: 'mon_amarisu',
+  },
+  {
+    id: 'quest_sun_shadow_watch',
+    areaId: 'area_rika',
+    name: '太陽とかげを調べよう',
+    unit: '太陽とかげ',
+    emoji: '☀️🌓',
+    description:
+      '太陽とかげを調べて、晴れた日のひみつを見つけよう。\nかげの向きや長さに注目してみよう。',
+    questionIds: [
+      'science_sun_shadow_001',
+      'science_sun_shadow_002',
+      'science_sun_shadow_003',
+    ],
+    rewardMonsterId: 'mon_kagepika',
+  },
+  {
+    id: 'quest_map_symbols_square',
+    areaId: 'area_shakai',
+    name: '地図のしるし広場',
+    unit: '地図の見方',
+    emoji: '🧭🗺️',
+    description:
+      '地図のしるしや方位を調べて、広場の道を見つけよう。\n方位記号を見れば、北や東西南北がわかるよ。',
+    questionIds: [
+      'social_map_symbols_001',
+      'social_map_symbols_002',
+      'social_map_symbols_003',
+    ],
+    rewardMonsterId: 'mon_markame',
+  },
+  {
+    id: 'quest_color_words_beach',
+    areaId: 'area_eigo',
+    name: '色の英語ビーチ',
+    unit: '色の英語',
+    emoji: '🎨🏖️',
+    description:
+      '色の英語を選んで、ビーチのカードを集めよう。\n身近な色を英語で言えるようになろう。',
+    questionIds: [
+      'english_color_words_001',
+      'english_color_words_002',
+      'english_color_words_003',
+    ],
+    rewardMonsterId: 'mon_cololing',
+  },
 ];
 
 export function findQuestsByArea(areaId: string): Quest[] {

@@ -71,7 +71,7 @@ export function ShopScreen({ player, onBuy, onBack }: Props) {
                 <div className="shop-item-owned">✅ 購入済み</div>
               ) : locked ? (
                 <button className="btn btn-plain btn-small shop-buy-btn" onClick={() => handleBuy(item)}>
-                  🔒 5体そろえてね
+                  🔒 {MONSTERS.length}体そろえてね
                 </button>
               ) : (
                 <button
@@ -89,7 +89,7 @@ export function ShopScreen({ player, onBuy, onBack }: Props) {
               )}
               {fb === 'locked' && (
                 <div className="shop-feedback shop-feedback-ng">
-                  5体そろうと買えるよ
+                  {MONSTERS.length}体そろうと買えるよ
                 </div>
               )}
             </div>

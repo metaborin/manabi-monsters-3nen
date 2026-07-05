@@ -502,6 +502,187 @@ label {
   text-align: center;
 }
 
+/* ===== 島全体マップ（施設アイコン配置） ===== */
+
+.island-map {
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* PC・タブレット用（横長マップ）のアイコン・ラベルサイズ。
+   マップは validated 座標が破綻しないよう、カード列（720px）より広く見せる。
+   .screen の外側へはみ出して中央寄せ（body の overflow-x:hidden で横スクロールは出ない）。 */
+.island-map-desktop {
+  --icon-size: clamp(52px, 6.6vw, 88px);
+  --home-icon-size: clamp(64px, 7.6vw, 104px);
+  --label-size: clamp(0.72rem, 1.85vw, 0.98rem);
+  --btn-pad: 16px;
+  width: min(94vw, 1100px);
+  max-width: none;
+  /* .screen（720px列）より広げつつ中央寄せ。
+     auto マージンだと横幅超過時に左寄せになるため margin:0 + align-self:center を使う */
+  margin: 0;
+  align-self: center;
+}
+
+/* スマホ用（縦長マップ）のアイコン・ラベルサイズ。
+   縦長マップは施設が密なので、アイコン・白リング・ラベルを少し小さめにして
+   ラベルが下の施設アイコンに大きくかぶらないようにする（タップ領域は56px確保）。 */
+.island-map-mobile {
+  --icon-size: clamp(52px, 11.5vw, 62px);
+  --home-icon-size: clamp(62px, 13vw, 72px);
+  --label-size: clamp(0.72rem, 3vw, 0.9rem);
+  --btn-pad: 8px;
+  --label-gap: 3px;
+  max-width: 460px;
+}
+
+.island-map-stage {
+  position: relative;
+  width: 100%;
+  border-radius: 20px;
+  overflow: hidden;
+  background: #cbeaf7;
+  box-shadow:
+    0 10px 26px rgba(48, 91, 122, 0.2),
+    inset 0 0 0 2px rgba(255, 255, 255, 0.6);
+}
+
+.island-map-image {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: inherit;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+/* 施設アイコンの中心アンカー。left/top を % で指定し中央合わせ */
+.facility-marker {
+  position: absolute;
+  left: var(--x);
+  top: var(--y);
+  width: 0;
+  height: 0;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+}
+
+.facility-button {
+  --current-icon-size: var(--icon-size);
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: grid;
+  place-items: center;
+  width: calc(var(--current-icon-size) + var(--btn-pad, 16px));
+  height: calc(var(--current-icon-size) + var(--btn-pad, 16px));
+  min-width: 56px;
+  min-height: 56px;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow:
+    0 8px 18px rgba(31, 71, 102, 0.24),
+    0 0 0 3px rgba(255, 210, 77, 0.85);
+  cursor: pointer;
+  transform: translate(-50%, -50%);
+  transition:
+    transform 160ms ease,
+    box-shadow 160ms ease,
+    filter 160ms ease;
+}
+
+.facility-button:hover,
+.facility-button:focus-visible {
+  outline: none;
+  filter: saturate(1.08);
+  transform: translate(-50%, -50%) scale(1.08);
+  box-shadow:
+    0 10px 24px rgba(31, 71, 102, 0.3),
+    0 0 0 5px rgba(255, 210, 77, 0.92);
+  z-index: 3;
+}
+
+/* 中央拠点（まなび島）は一回り大きく、リングを濃くする */
+.facility-button.is-home {
+  --current-icon-size: var(--home-icon-size);
+  box-shadow:
+    0 10px 24px rgba(31, 71, 102, 0.3),
+    0 0 0 4px rgba(255, 188, 48, 0.95);
+}
+
+.facility-icon {
+  display: block;
+  width: var(--current-icon-size);
+  height: var(--current-icon-size);
+  object-fit: contain;
+  pointer-events: none;
+}
+
+.facility-icon-fallback {
+  display: grid;
+  place-items: center;
+  font-size: calc(var(--current-icon-size) * 0.62);
+  line-height: 1;
+}
+
+.facility-label {
+  position: absolute;
+  left: 50%;
+  top: calc(50% + var(--current-icon-size) / 2 + var(--label-gap, 6px));
+  max-width: max-content;
+  padding: 2px 10px 3px;
+  border: 1px solid rgba(34, 83, 122, 0.32);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow: 0 4px 10px rgba(31, 71, 102, 0.18);
+  color: #284662;
+  font-size: var(--label-size);
+  font-weight: 700;
+  line-height: 1.25;
+  pointer-events: none;
+  text-align: center;
+  text-shadow: 0 1px 0 #fff;
+  transform: translateX(-50%);
+  white-space: nowrap;
+}
+
+/* ラベルを上に逃がす施設（下に別の施設が近いときの回避） */
+.facility-marker.label-top .facility-label {
+  top: auto;
+  bottom: calc(50% + var(--current-icon-size) / 2 + var(--label-gap, 6px));
+}
+
+/* スマホは施設が密なので、ラベルの余白を詰めて縦の占有を小さくする */
+.island-map-mobile .facility-label {
+  padding: 1px 8px 2px;
+}
+
+/* 地図が読み込めなかったときの案内 */
+.island-map-fallback {
+  padding: 20px 16px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.85);
+  box-shadow: 0 6px 16px rgba(80, 120, 200, 0.16);
+  text-align: center;
+}
+
+.island-map-fallback-text {
+  font-size: 16px;
+  font-weight: bold;
+  color: #4a5a7a;
+}
+
+.island-map-hint {
+  margin-top: -6px;
+  font-size: 15px;
+  font-weight: bold;
+  color: #4a5a7a;
+  text-align: center;
+}
+
 /* 次のおすすめカード */
 .next-guide-card {
   width: 100%;

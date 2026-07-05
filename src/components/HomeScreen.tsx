@@ -8,6 +8,7 @@ import { getAreaProgress, getNextGuide } from '../utils/progress';
 import { publicAssetUrl } from '../utils/assets';
 import { AreaCard } from './AreaCard';
 import { MapSpotCard } from './MapSpotCard';
+import { IslandMap } from './IslandMap';
 
 interface Props {
   player: PlayerState;
@@ -73,9 +74,20 @@ export function HomeScreen({
 
       <header className="home-header island-map-header">
         <h2 className="home-title">🗺️ まなび島マップ</h2>
-        <p className="island-here">🧭 いまいるところ：ちゅうおう広場</p>
+        <p className="island-here">🧭 いまいるところ：まなび島のちゅうおう</p>
         <p className="home-player-name">ぼうけんしゃ：{player.name} さん</p>
       </header>
+
+      {/* 島全体マップ。施設アイコンを押すと各画面へ移動できる */}
+      <IslandMap
+        onSelectArea={onSelectArea}
+        onOpenShop={onOpenShop}
+        onOpenDex={onOpenDex}
+        onOpenIsland={onOpenIsland}
+      />
+      <p className="island-map-hint">
+        🏝️ アイコンをおして あそびに行こう！したのメニューからもえらべるよ。
+      </p>
 
       <div className="card level-card">
         <div className="level-card-top">

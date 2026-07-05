@@ -136,3 +136,26 @@ v0.8.4で追加したタイトルロゴ画像（public/assets/title/title_logo.p
 画像が読み込めない場合のみ従来のHTML文字（🏝️✨／まなびモンスターズ／〜 3年生のひみつ島 〜）に
 フォールバック。名前入力欄・はじめるボタン・つづきから・データリセットの挙動は変更なし。
 保存データ構造・保存キー・各種ID・Vite base・PWA設定・Service Worker・manifest・アイコンは変更なし。
+
+## v0.8.6
+ホーム画面「まなび島マップ拠点」を、島全体マップを使ったゲームらしい画面に強化。
+ホーム上部（タイトルロゴとヘッダーの下）に島全体マップ画像を表示し、その上に9施設の
+アイコン（国語・算数・理科・社会・英語・ショップ・図鑑・まなび島・広場）をabsolute配置。
+施設アイコンを押すと既存の画面遷移（各教科エリア／ショップ／図鑑／コレクション広場）を呼び出す。
+中央拠点「まなび島」は「いまいるところ」で、押すとマップ上部へスムーズスクロール。
+- 表示切り替え：600px以下（スマホ幅）は縦長の専用マップ（manabi_island_map_mobile.png）と
+  スマホ専用座標、それより広い画面（PC・タブレット）は横長マップ（manabi_island_map_base.png）と
+  base座標を使う。useMediaQueryフックで判定し、画像は片方だけ読み込む。
+- アイコンサイズはCSS clampで可変（PC通常92px前後／まなび島108px前後、
+  スマホ通常64px前後／まなび島76px前後）。
+- ラベルはHTML/CSSで表示。英語・図鑑など下側で混む場所はラベルを上に逃がす。
+- 画像読み込み失敗時のフォールバック：マップ画像が読めない場合は地図を出さず案内文のみ表示、
+  施設アイコンが読めない場合は絵文字にフォールバック。どちらでも下のカード型メニューで移動可能。
+- 既存のカード型メニュー（きょうかの島／島のしせつ）はそのまま下部に残した。
+使用素材：
+  public/assets/island-map/manabi_island_map_base.png（prepared/v087/map の base_sample をコピー）
+  public/assets/island-map/manabi_island_map_mobile.png（同 mobile_sample をコピー）
+  public/assets/facilities/facility_*.png 9点（prepared/v084/facilities の *_sample をコピー）
+  ※ prepared 配下の試作素材一式・確認用HTMLはコミットに含めていない。
+保存データ構造・保存キー・各種ID（クエスト／問題／モンスター／ショップアイテム）・Vite base
+（/manabi-monsters-3nen/）・PWA設定・Service Worker・manifest・アイコンは変更なし。

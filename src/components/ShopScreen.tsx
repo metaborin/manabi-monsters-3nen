@@ -1,17 +1,40 @@
 import { useState } from 'react';
 import type { PlayerState, ShopItem } from '../types/game';
 import { SHOP_ITEMS } from '../data/shopItems';
+import { HELP_ITEMS } from '../data/helpItems';
 import { MONSTERS } from '../data/monsters';
+import { publicAssetUrl } from '../utils/assets';
 
 interface Props {
   player: PlayerState;
   onBuy: (itemId: string, price: number) => void;
+  /** つかうアイテム（消費アイテム）の購入 */
+  onBuyConsumable: (itemId: string, price: number) => void;
   onBack: () => void;
 }
 
 type Feedback = { itemId: string; kind: 'bought' | 'poor' | 'locked' };
 
-export function ShopScreen({ player, onBuy, onBack }: Props) {
+/** ショップのアイテムアイコン（画像があれば画像、なければ絵文字） */
+function ShopItemIcon({ item }: { item: ShopItem }) {
+  const [failed, setFailed] = useState(false);
+  const url = publicAssetUrl(item.image);
+  if (url && !failed) {
+    return (
+      <img
+        className="shop-item-image"
+        src={url}
+        alt={item.name}
+        loading="lazy"
+        decoding="async"
+        onError={() => setFailed(true)}
+      />
+    );
+  }
+  return <span className="shop-item-emoji">{item.emoji}</span>;
+}
+
+export function ShopScreen({ player, onBuy, onBuyConsumable, onBack }: Props) {
   const [feedback, setFeedback] = useState<Feedback | null>(null);
   const dexComplete = MONSTERS.every((m) => player.monsterIds.includes(m.id));
 
@@ -29,12 +52,21 @@ export function ShopScreen({ player, onBuy, onBack }: Props) {
     setFeedback({ itemId: item.id, kind: 'bought' });
   };
 
+  const handleBuyConsumable = (item: ShopItem) => {
+    if (player.coins < item.price) {
+      setFeedback({ itemId: item.id, kind: 'poor' });
+      return;
+    }
+    onBuyConsumable(item.id, item.price);
+    setFeedback({ itemId: item.id, kind: 'bought' });
+  };
+
   return (
     <div className="screen shop-screen">
       <header className="home-header">
         <h2 className="home-title">🛍️ まなびショップ</h2>
         <p className="home-player-name">コインを使って、まなび島のアイテムを集めよう！</p>
-        <p className="shop-island-note">🏝️ 買ったアイテムは、まなび島に飾られるよ！</p>
+        <p className="shop-island-note">🏝️ かざりはまなび島に飾られるよ。たすけアイテムはクエストでつかえるよ！</p>
       </header>
 
       <div className="card shop-coin-card">
@@ -43,12 +75,48 @@ export function ShopScreen({ player, onBuy, onBack }: Props) {
         <span className="shop-coin-value">{player.coins}</span>
       </div>
 
+      {/* つかうアイテム（クエストで役立つ消費アイテム） */}
+      <h3 className="section-title shop-section-title">🎒 たすけアイテム（クエストでつかう）</h3>
+      <div className="shop-grid">
+        {HELP_ITEMS.map((item) => {
+          const owned = player.itemCounts[item.id] ?? 0;
+          const canAfford = player.coins >= item.price;
+          const fb = feedback && feedback.itemId === item.id ? feedback.kind : null;
+
+          return (
+            <div key={item.id} className="card shop-item-card shop-item-help">
+              <span className="shop-item-count-badge">×{owned}</span>
+              <ShopItemIcon item={item} />
+              <span className="shop-item-name">{item.name}</span>
+              <span className="shop-item-category">{item.category}</span>
+              <p className="shop-item-description">{item.description}</p>
+              <span className="shop-item-price">🪙 {item.price}コイン</span>
+
+              <button
+                className="btn btn-primary btn-small shop-buy-btn"
+                onClick={() => handleBuyConsumable(item)}
+                disabled={!canAfford}
+              >
+                {canAfford ? '🛒 こうにゅう' : 'コインが足りないよ'}
+              </button>
+
+              {fb === 'bought' && (
+                <div className="shop-feedback shop-feedback-ok">🎉 1つ手に入れた！</div>
+              )}
+              {fb === 'poor' && <div className="shop-feedback shop-feedback-ng">コインが足りません</div>}
+            </div>
+          );
+        })}
+      </div>
+
       {dexComplete && (
         <div className="card shop-dex-message">
-          🎉 5教科のモンスターがそろったね！記念アイテムが買えるようになったよ！
+          🎉 {MONSTERS.length}体のモンスターがそろったね！記念アイテムが買えるようになったよ！
         </div>
       )}
 
+      {/* かざり・きろく（まなび島に飾るアイテム） */}
+      <h3 className="section-title shop-section-title">🎁 かざり・きろく</h3>
       <div className="shop-grid">
         {SHOP_ITEMS.map((item) => {
           const purchased = player.purchasedItemIds.includes(item.id);
@@ -61,7 +129,7 @@ export function ShopScreen({ player, onBuy, onBack }: Props) {
               key={item.id}
               className={`card shop-item-card ${purchased ? 'shop-item-purchased' : ''}`}
             >
-              <span className="shop-item-emoji">{item.emoji}</span>
+              <ShopItemIcon item={item} />
               <span className="shop-item-name">{item.name}</span>
               <span className="shop-item-category">{item.category}</span>
               <p className="shop-item-description">{item.description}</p>

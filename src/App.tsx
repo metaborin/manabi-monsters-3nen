@@ -42,7 +42,8 @@ const ENTRANCE_SUBTITLE: Record<Subject, string> = {
 };
 
 export default function App() {
-  const { player, startNewGame, applyQuestResult, buyItem, resetGame } = useGameState();
+  const { player, startNewGame, applyQuestResult, buyItem, buyConsumable, consumeItem, resetGame } =
+    useGameState();
   const [screen, setScreen] = useState<Screen>('title');
   const [currentArea, setCurrentArea] = useState<Area | null>(null);
   const [currentQuest, setCurrentQuest] = useState<Quest | null>(null);
@@ -111,24 +112,28 @@ export default function App() {
     totalCount: number,
     earnedCoins: number,
     earnedExp: number,
+    coinBonus = 0,
   ) => {
     if (!currentQuest || !player) return;
     const alreadyOwned =
       currentQuest.rewardMonsterId !== null &&
       player.monsterIds.includes(currentQuest.rewardMonsterId);
     const isFirstClear = !player.clearedQuestIds.includes(currentQuest.id);
+    // 2回目以降は練習クリア扱いでコイン半分（経験値はそのまま）。
+    // コインアップスターのボーナスは、そのあとに足す（+5 は半分にしない）。
+    const baseCoins = isFirstClear ? earnedCoins : Math.floor(earnedCoins / 2);
     const result: QuestResult = {
       questId: currentQuest.id,
       correctCount,
       totalCount,
-      // 2回目以降は練習クリア扱いでコイン半分（経験値はそのまま）
-      earnedCoins: isFirstClear ? earnedCoins : Math.floor(earnedCoins / 2),
+      earnedCoins: baseCoins + coinBonus,
       earnedExp,
       newMonsterId:
         currentQuest.rewardMonsterId !== null && !alreadyOwned
           ? currentQuest.rewardMonsterId
           : null,
       isFirstClear,
+      coinBonus,
     };
     setLevelBeforeQuest(getLevelInfo(player.exp).level);
     applyQuestResult(result);
@@ -176,6 +181,8 @@ export default function App() {
         area={currentArea}
         key={currentQuest.id}
         quest={currentQuest}
+        itemCounts={player.itemCounts}
+        onConsumeItem={consumeItem}
         onFinish={handleQuestFinish}
         onBack={() => setScreen('questSelect')}
       />
@@ -207,7 +214,14 @@ export default function App() {
   }
 
   if (screen === 'shop') {
-    return <ShopScreen player={player} onBuy={buyItem} onBack={() => setScreen('home')} />;
+    return (
+      <ShopScreen
+        player={player}
+        onBuy={buyItem}
+        onBuyConsumable={buyConsumable}
+        onBack={() => setScreen('home')}
+      />
+    );
   }
 
   if (screen === 'island') {

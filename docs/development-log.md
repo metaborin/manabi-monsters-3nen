@@ -227,3 +227,29 @@ v0.8.8で追加した新モンスター5体（emoji表示だった）に、Codex
 - prepared 配下（public/assets/prepared/v088/monsters）はコミットに含めない。本番採用の5枚のみ。
 保存データ構造・保存キー・既存ID・PlayerState・Vite base（/manabi-monsters-3nen/）・
 PWA設定・Service Worker・manifest・アイコン・島マップ・クエスト/ショップ/図鑑の挙動は変更なし。
+
+## v0.9.0
+「アイテムに意味を持たせる」第一歩として、クエスト攻略につかえる消費アイテム3種を実装。
+- 追加した「たすけアイテム」（消費アイテム／新規ID）：
+  ・item_hint_candy（ヒントキャンディ 15コイン）… クエスト中に今の問題のヒントを表示。
+  ・item_retry_ticket（やりなおしチケット 15コイン）… まちがえたとき1回だけやりなおせる。
+  ・item_coin_star（コインアップスター 10コイン）… つかうとクリア報酬コインが +5。
+- 保存データは後方互換で最小拡張：PlayerState に `itemCounts: Record<string, number>`（消費アイテムの
+  所持数）を追加。既存の飾りアイテム（purchasedItemIds）とは別管理なので、まなび島の飾り表示・
+  アイテム数カウント（N/SHOP_ITEMS.length）に影響なし。古い保存は itemCounts を空として読み込む
+  （storage.ts でサニタイズ）。保存キー `manabi-monsters-save` は変更なし。
+- 消費アイテムは飾りアイテムと別リスト（新規 src/data/helpItems.ts の HELP_ITEMS）。ショップは
+  「🎒 たすけアイテム（クエストでつかう）」セクションを追加し、所持数バッジ付き・複数購入可・画像表示。
+- クエスト開始画面に「つかうアイテム」パネル：コインアップスターをここでつかう／ヒント・やりなおしの
+  所持数を表示。クイズ中は「🍬 ヒントをみる」「🎫 やりなおしチケットをつかう（まちがえたとき）」を表示。
+  使用で itemCounts を1減算（useGameState.consumeItem）。
+- 問題に短いヒント（hint）を追加（Question.hint は任意）。今回は v0.8.8 の15問に付与、他は共通ヒント
+  「よく考えてみよう！」にフォールバック。
+- 結果画面：コインアップ使用時は「⭐ コインアップ +5」行を表示（コイン行と分けて表示、合計は実加算と一致）。
+  +5 は練習クリアの半減の対象にせず、半減後に加算。
+- 画像は本番採用の3枚（512版）だけを public/assets/items/ にコピー（item_hint_candy_512.png /
+  item_retry_ticket_512.png / item_coin_star_512.png）。四隅完全透過を確認。未使用の素材（heart_cookie /
+  exp_note / skill_star / boss_key / badge_case）と prepared 配下はコミットに含めない。
+今回まだ実装しないもの：ハート制・モンスタースキル・教科ボス（今後の v0.9.1〜）。
+既存のクエスト/問題/モンスター/ショップアイテムID・図鑑・まなび島・リセット・Vite base
+（/manabi-monsters-3nen/）・PWA・Service Worker・manifest・アイコンは変更なし。

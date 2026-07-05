@@ -18,6 +18,7 @@ export function useGameState() {
       monsterIds: [],
       clearedQuestIds: [],
       purchasedItemIds: [],
+      itemCounts: {},
     });
   }, []);
 
@@ -56,10 +57,42 @@ export function useGameState() {
     });
   }, []);
 
+  /**
+   * つかうアイテム（消費アイテム）の購入。コインを払って所持数を1増やす。
+   * 複数持てるので購入済みチェックはしない。コイン不足時は何もしない。
+   */
+  const buyConsumable = useCallback((itemId: string, price: number) => {
+    setPlayer((prev) => {
+      if (!prev) return prev;
+      if (prev.coins < price) return prev;
+      const itemCounts = { ...prev.itemCounts, [itemId]: (prev.itemCounts[itemId] ?? 0) + 1 };
+      return { ...prev, coins: prev.coins - price, itemCounts };
+    });
+  }, []);
+
+  /** つかうアイテムを1つ消費する。所持数0以下なら何もしない（防御的ガード）。 */
+  const consumeItem = useCallback((itemId: string) => {
+    setPlayer((prev) => {
+      if (!prev) return prev;
+      const current = prev.itemCounts[itemId] ?? 0;
+      if (current <= 0) return prev;
+      const itemCounts = { ...prev.itemCounts, [itemId]: current - 1 };
+      return { ...prev, itemCounts };
+    });
+  }, []);
+
   const resetGame = useCallback(() => {
     clearSave();
     setPlayer(null);
   }, []);
 
-  return { player, startNewGame, applyQuestResult, buyItem, resetGame };
+  return {
+    player,
+    startNewGame,
+    applyQuestResult,
+    buyItem,
+    buyConsumable,
+    consumeItem,
+    resetGame,
+  };
 }

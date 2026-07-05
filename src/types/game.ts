@@ -35,6 +35,8 @@ export interface Question {
   explanation: string;
   rewardCoins: number;
   rewardExp: number;
+  /** ヒントキャンディで表示する短いヒント。無い問題は共通ヒントにフォールバックする（v0.9.0） */
+  hint?: string;
 }
 
 /** クエスト */
@@ -72,6 +74,11 @@ export interface PlayerState {
   monsterIds: string[];
   clearedQuestIds: string[];
   purchasedItemIds: string[];
+  /**
+   * つかうアイテム（消費アイテム）の所持数。アイテムID→個数（v0.9.0で追加）。
+   * 既存の飾りアイテム（purchasedItemIds）とは別管理。古い保存データでは空扱い。
+   */
+  itemCounts: Record<string, number>;
 }
 
 /** ショップで買えるアイテム */
@@ -82,6 +89,8 @@ export interface ShopItem {
   description: string;
   category: string;
   emoji: string;
+  /** アイコン画像パス（省略時は emoji 表示）。v0.9.0 */
+  image?: string;
   /** true のとき、図鑑をコンプリートするまで購入できない */
   requiresDexComplete?: boolean;
 }
@@ -97,4 +106,6 @@ export interface QuestResult {
   newMonsterId: string | null;
   /** 初回クリアなら true、2回目以降の練習クリアなら false */
   isFirstClear: boolean;
+  /** コインアップスターで増えたコイン数（つかっていなければ 0）。v0.9.0 */
+  coinBonus?: number;
 }

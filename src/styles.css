@@ -1640,6 +1640,163 @@ label {
   line-height: 1.7;
 }
 
+/* ===== つかうアイテム（v0.9.0） ===== */
+
+/* クエスト開始画面のたすけアイテムパネル */
+.quest-help-panel {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px 14px;
+  border-radius: 16px;
+  background: #f2f8ff;
+  text-align: left;
+}
+.quest-help-title {
+  font-size: 15px;
+  font-weight: bold;
+  color: #5a6a8a;
+}
+.quest-help-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.quest-help-empty {
+  font-size: 14px;
+  color: #8a93ad;
+  line-height: 1.5;
+}
+.quest-help-active {
+  font-size: 16px;
+  font-weight: bold;
+  color: #b5730a;
+  background: #fff3d2;
+  border-radius: 12px;
+  padding: 8px 12px;
+}
+.quest-help-use-btn {
+  align-self: stretch;
+  font-size: 16px;
+  font-weight: bold;
+  padding: 10px 14px;
+  color: #7a4e00;
+  background: linear-gradient(180deg, #ffd45e, #ffb938);
+  box-shadow: 0 3px 8px rgba(214, 150, 20, 0.35);
+}
+.quest-help-chip {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 2px 8px;
+  font-size: 15px;
+  font-weight: bold;
+  color: #3a3a55;
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 8px 12px;
+  box-shadow: inset 0 0 0 2px #e2ecff;
+}
+.quest-help-note {
+  font-size: 12px;
+  font-weight: normal;
+  color: #8a93ad;
+}
+
+/* クイズ中のコインアップ表示 */
+.quest-boost-banner {
+  width: 100%;
+  max-width: 560px;
+  margin-top: 12px;
+  text-align: center;
+  font-size: 15px;
+  font-weight: bold;
+  color: #b5730a;
+  background: #fff3d2;
+  border-radius: 999px;
+  padding: 8px 14px;
+}
+
+/* ヒントキャンディ */
+.quiz-hint-btn {
+  align-self: flex-start;
+  font-size: 16px;
+  font-weight: bold;
+  padding: 8px 16px;
+  color: #8a5a00;
+  background: linear-gradient(180deg, #ffe08a, #ffcf5c);
+  box-shadow: 0 3px 8px rgba(214, 150, 20, 0.3);
+}
+.quiz-hint {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 10px 14px;
+  border-radius: 14px;
+  background: #fff8de;
+  border: 2px dashed #ffcf5c;
+}
+.quiz-hint-label {
+  font-size: 13px;
+  font-weight: bold;
+  color: #b07a00;
+}
+.quiz-hint-text {
+  font-size: 18px;
+  line-height: 1.6;
+  color: #5a4a1a;
+}
+
+/* やりなおしチケット */
+.quiz-retry-btn {
+  align-self: center;
+  font-size: 16px;
+  font-weight: bold;
+  padding: 10px 16px;
+  color: #12557f;
+  background: linear-gradient(180deg, #bfe6ff, #8fd3ff);
+  box-shadow: 0 3px 8px rgba(40, 120, 180, 0.28);
+}
+
+/* 結果画面のコインアップ行 */
+.result-row-bonus {
+  background: #fff6e0;
+}
+.result-row-bonus .result-label,
+.result-row-bonus .result-value {
+  color: #c07a0a;
+}
+
+/* ショップのアイテム画像・たすけアイテム */
+.shop-section-title {
+  align-self: flex-start;
+  margin-top: 6px;
+  font-size: 22px;
+}
+.shop-item-image {
+  width: 64px;
+  height: 64px;
+  object-fit: contain;
+  filter: drop-shadow(0 3px 4px rgba(86, 95, 130, 0.18));
+}
+.shop-item-help {
+  position: relative;
+  border-color: #ffd876;
+}
+.shop-item-count-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 13px;
+  font-weight: bold;
+  color: #ffffff;
+  background: #ff8c42;
+  border-radius: 999px;
+  padding: 2px 10px;
+  box-shadow: 0 2px 5px rgba(220, 120, 40, 0.4);
+}
+
 @keyframes slide-up {
   from {
     opacity: 0;

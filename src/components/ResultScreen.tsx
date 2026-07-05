@@ -71,8 +71,14 @@ export function ResultScreen({
           </div>
           <div className="result-row">
             <span className="result-label">🪙 かくとくコイン</span>
-            <span className="result-value">+{result.earnedCoins}</span>
+            <span className="result-value">+{result.earnedCoins - (result.coinBonus ?? 0)}</span>
           </div>
+          {(result.coinBonus ?? 0) > 0 && (
+            <div className="result-row result-row-bonus">
+              <span className="result-label">⭐ コインアップ</span>
+              <span className="result-value">+{result.coinBonus}</span>
+            </div>
+          )}
           <div className="result-row">
             <span className="result-label">⭐ かくとくけいけんち</span>
             <span className="result-value">+{result.earnedExp}</span>

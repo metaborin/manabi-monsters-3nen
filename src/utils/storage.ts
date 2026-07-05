@@ -2,6 +2,18 @@ import type { PlayerState } from '../types/game';
 
 const SAVE_KEY = 'manabi-monsters-save';
 
+/** itemCounts を安全な { [id]: 0以上の整数 } に整える（不正値は捨てる） */
+function sanitizeItemCounts(value: unknown): Record<string, number> {
+  if (!value || typeof value !== 'object' || Array.isArray(value)) return {};
+  const result: Record<string, number> = {};
+  for (const [id, count] of Object.entries(value as Record<string, unknown>)) {
+    if (typeof count === 'number' && Number.isFinite(count) && count > 0) {
+      result[id] = Math.floor(count);
+    }
+  }
+  return result;
+}
+
 /** localStorage からセーブデータを読み込む。なければ null */
 export function loadPlayer(): PlayerState | null {
   try {
@@ -23,6 +35,8 @@ export function loadPlayer(): PlayerState | null {
       purchasedItemIds: Array.isArray(data.purchasedItemIds)
         ? data.purchasedItemIds.filter((v): v is string => typeof v === 'string')
         : [],
+      // 古い保存データには itemCounts がないので空オブジェクトとして扱う（v0.9.0）
+      itemCounts: sanitizeItemCounts(data.itemCounts),
     };
   } catch {
     return null;

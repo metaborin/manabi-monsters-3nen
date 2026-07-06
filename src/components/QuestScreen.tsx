@@ -1,7 +1,8 @@
 import { useMemo, useState } from 'react';
 import type { CSSProperties } from 'react';
-import type { Area, Quest, Question } from '../types/game';
+import type { Area, Monster, Quest, Question } from '../types/game';
 import { findQuestion } from '../data/questions';
+import { findMonster } from '../data/monsters';
 import {
   HINT_CANDY_ID,
   RETRY_TICKET_ID,
@@ -9,17 +10,21 @@ import {
   HEART_COOKIE_ID,
   COIN_STAR_BONUS,
   MAX_HEARTS,
+  PARTNER_SUBJECT_BONUS,
   DEFAULT_HINT,
 } from '../data/helpItems';
 import { shuffledIndices } from '../utils/shuffle';
 import { publicAssetUrl } from '../utils/assets';
 import { QuizCard } from './QuizCard';
+import { MonsterImage } from './MonsterImage';
 
 interface Props {
   area: Area;
   quest: Quest;
   /** つかうアイテムの所持数（アイテムID→個数） */
   itemCounts: Record<string, number>;
+  /** すでに仲間になっているモンスターのID（相棒えらび用）。v0.9.2 */
+  ownedMonsterIds: string[];
   /** つかうアイテムを1つ消費する */
   onConsumeItem: (itemId: string) => void;
   onFinish: (
@@ -28,6 +33,7 @@ interface Props {
     earnedCoins: number,
     earnedExp: number,
     coinBonus: number,
+    partnerBonus: number,
   ) => void;
   onBack: () => void;
 }
@@ -88,13 +94,30 @@ function drawQuestions(pool: Question[], count?: number): Question[] {
   return order.slice(0, drawCount).map((i) => pool[i]);
 }
 
-export function QuestScreen({ area, quest, itemCounts, onConsumeItem, onFinish, onBack }: Props) {
+export function QuestScreen({
+  area,
+  quest,
+  itemCounts,
+  ownedMonsterIds,
+  onConsumeItem,
+  onFinish,
+  onBack,
+}: Props) {
   const pool = useMemo<Question[]>(
     () =>
       quest.questionIds
         .map((id) => findQuestion(id))
         .filter((q): q is Question => q !== undefined),
     [quest],
+  );
+
+  // 仲間になっているモンスター（相棒の候補）
+  const ownedMonsters = useMemo<Monster[]>(
+    () =>
+      ownedMonsterIds
+        .map((id) => findMonster(id))
+        .filter((m): m is Monster => m !== undefined),
+    [ownedMonsterIds],
   );
 
   const [phase, setPhase] = useState<'intro' | 'quiz' | 'failed'>('intro');
@@ -108,6 +131,10 @@ export function QuestScreen({ area, quest, itemCounts, onConsumeItem, onFinish, 
   const [coinBoost, setCoinBoost] = useState(false);
   // 残りハート（このクエストだけの一時状態。保存はしない）
   const [hearts, setHearts] = useState(MAX_HEARTS);
+  // 相棒モンスター（このクエストだけの一時状態。保存はしない）
+  const [partnerId, setPartnerId] = useState<string | null>(null);
+  // 相棒スキル（ヒント）をこのクエストでつかったか
+  const [skillUsed, setSkillUsed] = useState(false);
   const backgroundImageUrl = publicAssetUrl(area.backgroundImage);
   const backgroundStyle = backgroundImageUrl
     ? ({ '--area-bg-image': `url("${backgroundImageUrl}")` } as CSSProperties)
@@ -120,6 +147,11 @@ export function QuestScreen({ area, quest, itemCounts, onConsumeItem, onFinish, 
   const hasAnyHelp =
     hintCount > 0 || retryCount > 0 || coinStarCount > 0 || heartCookieCount > 0 || coinBoost;
 
+  const partner = partnerId ? findMonster(partnerId) ?? null : null;
+  // 相棒の教科と、このクエストの教科（エリアの教科）が同じか
+  const subjectMatch = partner ? partner.subject === area.subject : false;
+  const partnerBonus = subjectMatch ? PARTNER_SUBJECT_BONUS : 0;
+
   const startQuiz = () => {
     setQuizQuestions(drawQuestions(pool, quest.questionCount));
     setCurrentIndex(0);
@@ -127,6 +159,7 @@ export function QuestScreen({ area, quest, itemCounts, onConsumeItem, onFinish, 
     setEarnedCoins(0);
     setEarnedExp(0);
     setHearts(MAX_HEARTS);
+    setSkillUsed(false);
     setPhase('quiz');
   };
 
@@ -171,7 +204,15 @@ export function QuestScreen({ area, quest, itemCounts, onConsumeItem, onFinish, 
     const nextExp = earnedExp + (wasCorrect ? question.rewardExp : 0);
 
     if (currentIndex + 1 >= quizQuestions.length) {
-      onFinish(nextCorrect, quizQuestions.length, nextCoins, nextExp, coinBoost ? COIN_STAR_BONUS : 0);
+      // クリア時だけ、コインアップと相棒ボーナスを渡す（失敗時はここに来ない）
+      onFinish(
+        nextCorrect,
+        quizQuestions.length,
+        nextCoins,
+        nextExp,
+        coinBoost ? COIN_STAR_BONUS : 0,
+        partnerBonus,
+      );
       return;
     }
     setCorrectCount(nextCorrect);
@@ -199,6 +240,59 @@ export function QuestScreen({ area, quest, itemCounts, onConsumeItem, onFinish, 
           <p className="quest-heart-intro">
             ❤️ ハートは {MAX_HEARTS}つ。まちがえると1つへるよ。0になるまでがんばろう！
           </p>
+
+          {/* 相棒をえらぶ */}
+          <div className="quest-partner-panel">
+            <p className="quest-partner-title">🤝 いっしょに行くモンスターをえらぼう</p>
+            {ownedMonsters.length > 0 ? (
+              <>
+                <div className="quest-partner-choices">
+                  <button
+                    type="button"
+                    className={`quest-partner-choice ${partnerId === null ? 'is-selected' : ''}`}
+                    onClick={() => setPartnerId(null)}
+                  >
+                    <span className="quest-partner-none" aria-hidden="true">
+                      🚶
+                    </span>
+                    <span className="quest-partner-choice-name">相棒なし</span>
+                  </button>
+                  {ownedMonsters.map((m) => (
+                    <button
+                      type="button"
+                      key={m.id}
+                      className={`quest-partner-choice ${partnerId === m.id ? 'is-selected' : ''}`}
+                      onClick={() => setPartnerId(m.id)}
+                    >
+                      {m.subject === area.subject && (
+                        <span className="quest-partner-match-badge">きょうか◎</span>
+                      )}
+                      <MonsterImage
+                        monster={m}
+                        className="quest-partner-choice-img"
+                        fallbackClassName="quest-partner-choice-emoji"
+                      />
+                      <span className="quest-partner-choice-name">{m.name}</span>
+                    </button>
+                  ))}
+                </div>
+                {partner && (
+                  <p className="quest-partner-selected">
+                    ✨ {partner.name}と いっしょに行く！
+                    {subjectMatch && (
+                      <span className="quest-partner-bonus-note">
+                        きょうかが同じ！クリアで +{PARTNER_SUBJECT_BONUS}コイン
+                      </span>
+                    )}
+                  </p>
+                )}
+              </>
+            ) : (
+              <p className="quest-partner-empty">
+                まだ仲間がいないよ。クエストをクリアすると仲間がふえるよ！
+              </p>
+            )}
+          </div>
 
           {/* つかうアイテム（たすけアイテム） */}
           <div className="quest-help-panel">
@@ -291,6 +385,23 @@ export function QuestScreen({ area, quest, itemCounts, onConsumeItem, onFinish, 
         )}
       </div>
 
+      {/* 相棒モンスター */}
+      {partner && (
+        <div className="quest-partner-strip">
+          <MonsterImage
+            monster={partner}
+            className="quest-partner-strip-img"
+            fallbackClassName="quest-partner-strip-emoji"
+          />
+          <div className="quest-partner-strip-text">
+            <span className="quest-partner-strip-name">あいぼう：{partner.name}</span>
+            <span className="quest-partner-strip-skill">
+              {skillUsed ? '✅ スキルをつかったよ' : '✨ 相棒スキル：ヒントがつかえるよ'}
+            </span>
+          </div>
+        </div>
+      )}
+
       <QuizCard
         key={question.id}
         question={question}
@@ -304,6 +415,8 @@ export function QuestScreen({ area, quest, itemCounts, onConsumeItem, onFinish, 
         retryCount={retryCount}
         onUseRetry={useRetryTicket}
         onWrongAnswer={loseHeart}
+        skillAvailable={partner !== null && !skillUsed}
+        onUsePartnerSkill={() => setSkillUsed(true)}
       />
       {coinBoost && (
         <div className="quest-boost-banner">⭐ コインアップちゅう！クリアで +{COIN_STAR_BONUS}コイン</div>

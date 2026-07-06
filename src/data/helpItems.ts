@@ -21,6 +21,9 @@ export const COIN_STAR_BONUS = 5;
 /** 1クエストの最大ハート数（v0.9.1） */
 export const MAX_HEARTS = 3;
 
+/** 相棒モンスターの教科と、クエストの教科が同じときのクリアボーナスコイン（v0.9.2） */
+export const PARTNER_SUBJECT_BONUS = 3;
+
 /** 問題にヒントが無いときの共通ヒント（小学3年生向け） */
 export const DEFAULT_HINT = 'よく考えてみよう！';
 

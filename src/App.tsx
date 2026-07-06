@@ -113,6 +113,7 @@ export default function App() {
     earnedCoins: number,
     earnedExp: number,
     coinBonus = 0,
+    partnerBonus = 0,
   ) => {
     if (!currentQuest || !player) return;
     const alreadyOwned =
@@ -120,13 +121,13 @@ export default function App() {
       player.monsterIds.includes(currentQuest.rewardMonsterId);
     const isFirstClear = !player.clearedQuestIds.includes(currentQuest.id);
     // 2回目以降は練習クリア扱いでコイン半分（経験値はそのまま）。
-    // コインアップスターのボーナスは、そのあとに足す（+5 は半分にしない）。
+    // コインアップ・相棒ボーナスは、そのあとに足す（半分にしない）。
     const baseCoins = isFirstClear ? earnedCoins : Math.floor(earnedCoins / 2);
     const result: QuestResult = {
       questId: currentQuest.id,
       correctCount,
       totalCount,
-      earnedCoins: baseCoins + coinBonus,
+      earnedCoins: baseCoins + coinBonus + partnerBonus,
       earnedExp,
       newMonsterId:
         currentQuest.rewardMonsterId !== null && !alreadyOwned
@@ -134,6 +135,7 @@ export default function App() {
           : null,
       isFirstClear,
       coinBonus,
+      partnerBonus,
     };
     setLevelBeforeQuest(getLevelInfo(player.exp).level);
     applyQuestResult(result);
@@ -182,6 +184,7 @@ export default function App() {
         key={currentQuest.id}
         quest={currentQuest}
         itemCounts={player.itemCounts}
+        ownedMonsterIds={player.monsterIds}
         onConsumeItem={consumeItem}
         onFinish={handleQuestFinish}
         onBack={() => setScreen('questSelect')}

@@ -1,6 +1,9 @@
 import { useState } from 'react';
 import type { Question } from '../types/game';
 import { shuffledIndices } from '../utils/shuffle';
+import { publicAssetUrl } from '../utils/assets';
+
+const SKILL_HINT_URL = publicAssetUrl('assets/skills/skill_hint_icon_512.png');
 
 interface Props {
   question: Question;
@@ -20,6 +23,10 @@ interface Props {
   onUseRetry: () => void;
   /** まちがえた選択肢を選んだとき（親でハートを1つ減らす）。v0.9.1 */
   onWrongAnswer: () => void;
+  /** 相棒スキル（ヒント）がまだつかえるか（v0.9.2） */
+  skillAvailable: boolean;
+  /** 相棒スキルをつかう（親で「つかった」状態にする） */
+  onUsePartnerSkill: () => void;
 }
 
 export function QuizCard({
@@ -34,13 +41,17 @@ export function QuizCard({
   retryCount,
   onUseRetry,
   onWrongAnswer,
+  skillAvailable,
+  onUsePartnerSkill,
 }: Props) {
   // 表示順をシャッフル（マウントごとに変わるので、やり直すたびに順番が変わる）
   const [choiceOrder] = useState<number[]>(() => shuffledIndices(question.choices.length));
   // 選ばれた選択肢は「元データでの番号」で持つので、正解判定はシャッフルの影響を受けない
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
-  // ヒントキャンディを使ってヒントを表示したか
+  // ヒントキャンディまたは相棒スキルでヒントを表示したか
   const [hintShown, setHintShown] = useState(false);
+  // 相棒スキルのアイコン画像が読めなかったか
+  const [skillIconFailed, setSkillIconFailed] = useState(false);
   const answered = selectedIndex !== null;
   const wasCorrect = selectedIndex === question.answerIndex;
 
@@ -63,6 +74,12 @@ export function QuizCard({
     setHintShown(true);
   };
 
+  // 相棒スキル：ヒントキャンディを消費せずにヒントを見せる（1クエストに1回）
+  const handleUsePartnerSkill = () => {
+    onUsePartnerSkill();
+    setHintShown(true);
+  };
+
   // やりなおしチケット：同じ問題をもう一度こたえられるようにする
   const handleUseRetry = () => {
     onUseRetry();
@@ -76,6 +93,23 @@ export function QuizCard({
       </p>
       <p className="quiz-unit">📚 {question.unit}</p>
       <p className="quiz-text">{question.text}</p>
+
+      {/* 相棒スキル：ヒント（ヒントキャンディとは別枠で、1クエストに1回） */}
+      {!answered && !hintShown && skillAvailable && (
+        <button className="btn quiz-skill-btn" onClick={handleUsePartnerSkill}>
+          {SKILL_HINT_URL && !skillIconFailed && (
+            <img
+              className="quiz-skill-icon"
+              src={SKILL_HINT_URL}
+              alt=""
+              aria-hidden="true"
+              decoding="async"
+              onError={() => setSkillIconFailed(true)}
+            />
+          )}
+          相棒スキル：ヒント
+        </button>
+      )}
 
       {/* ヒントキャンディ */}
       {!answered && !hintShown && hintCount > 0 && (

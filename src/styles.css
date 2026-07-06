@@ -1889,6 +1889,157 @@ label {
   color: #5a6580;
 }
 
+/* ===== 相棒モンスター・スキル（v0.9.2） ===== */
+
+/* 開始画面：相棒えらび */
+.quest-partner-panel {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px 14px;
+  border-radius: 16px;
+  background: #f2f8ff;
+  text-align: left;
+}
+.quest-partner-title {
+  font-size: 15px;
+  font-weight: bold;
+  color: #5a6a8a;
+}
+.quest-partner-choices {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.quest-partner-choice {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 3px;
+  width: 74px;
+  padding: 8px 4px;
+  border: 3px solid transparent;
+  border-radius: 14px;
+  background: #ffffff;
+  box-shadow: 0 2px 6px rgba(80, 120, 200, 0.12);
+  cursor: pointer;
+  font-family: inherit;
+}
+.quest-partner-choice.is-selected {
+  border-color: #ffb43a;
+  background: #fff7e6;
+  box-shadow: 0 3px 10px rgba(255, 170, 50, 0.35);
+}
+.quest-partner-choice-img {
+  width: 44px;
+  height: 44px;
+  object-fit: contain;
+}
+.quest-partner-choice-emoji {
+  font-size: 36px;
+  line-height: 44px;
+}
+.quest-partner-none {
+  font-size: 34px;
+  line-height: 44px;
+}
+.quest-partner-choice-name {
+  font-size: 12px;
+  font-weight: bold;
+  color: #3a3a55;
+  text-align: center;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+}
+.quest-partner-match-badge {
+  position: absolute;
+  top: -8px;
+  right: -6px;
+  font-size: 10px;
+  font-weight: bold;
+  color: #ffffff;
+  background: #ff7aa8;
+  border-radius: 999px;
+  padding: 1px 6px;
+  box-shadow: 0 2px 4px rgba(220, 90, 140, 0.4);
+}
+.quest-partner-selected {
+  font-size: 14px;
+  font-weight: bold;
+  color: #2d6cb5;
+  line-height: 1.5;
+}
+.quest-partner-bonus-note {
+  display: inline-block;
+  margin-left: 4px;
+  color: #c07a0a;
+}
+.quest-partner-empty {
+  font-size: 14px;
+  color: #8a93ad;
+  line-height: 1.5;
+}
+
+/* クイズ中：相棒ストリップ */
+.quest-partner-strip {
+  width: 100%;
+  max-width: 560px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 14px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 4px 12px rgba(80, 120, 200, 0.12);
+}
+.quest-partner-strip-img {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+.quest-partner-strip-emoji {
+  font-size: 32px;
+  flex-shrink: 0;
+}
+.quest-partner-strip-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.quest-partner-strip-name {
+  font-size: 14px;
+  font-weight: bold;
+  color: #3a3a55;
+}
+.quest-partner-strip-skill {
+  font-size: 13px;
+  font-weight: bold;
+  color: #7a5bbf;
+}
+
+/* クイズ中：相棒スキル（ヒント）ボタン */
+.quiz-skill-btn {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 16px;
+  font-weight: bold;
+  padding: 8px 16px 8px 10px;
+  color: #6a3ea0;
+  background: linear-gradient(180deg, #e6d4ff, #cbb0ff);
+  box-shadow: 0 3px 8px rgba(140, 90, 200, 0.28);
+}
+.quiz-skill-icon {
+  width: 26px;
+  height: 26px;
+  object-fit: contain;
+}
+
 @keyframes slide-up {
   from {
     opacity: 0;

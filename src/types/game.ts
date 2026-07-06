@@ -108,4 +108,6 @@ export interface QuestResult {
   isFirstClear: boolean;
   /** コインアップスターで増えたコイン数（つかっていなければ 0）。v0.9.0 */
   coinBonus?: number;
+  /** 相棒モンスターの教科一致で増えたコイン数（なければ 0）。v0.9.2 */
+  partnerBonus?: number;
 }

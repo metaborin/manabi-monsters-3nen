@@ -1,6 +1,7 @@
 import { MONSTERS } from '../data/monsters';
 import { SUBJECT_LABELS } from '../types/game';
 import { MonsterImage } from './MonsterImage';
+import { UiIcon, UI_ICON_ASSETS } from './UiIcon';
 
 interface Props {
   ownedMonsterIds: string[];
@@ -37,7 +38,12 @@ export function MonsterDex({ ownedMonsterIds, onBack }: Props) {
                     fallbackClassName="dex-emoji"
                   />
                 ) : (
-                  <span className="dex-emoji">❓</span>
+                  <UiIcon
+                    src={UI_ICON_ASSETS.unknown}
+                    alt="未入手"
+                    className="dex-unknown-icon"
+                    fallback="❓"
+                  />
                 )}
               </div>
               <div className="dex-name">{owned ? monster.name : '？？？'}</div>

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { publicAssetUrl } from '../utils/assets';
+import { IconLabel, UI_ICON_ASSETS } from './UiIcon';
 
 interface Props {
   playerName: string;
@@ -98,7 +99,14 @@ export function EndingScreen({ playerName, onBack }: Props) {
           className="btn btn-plain btn-small"
           onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
         >
-          🔁 もういちど見る
+          <IconLabel
+            src={UI_ICON_ASSETS.retry}
+            alt="リトライ"
+            iconClassName="button-inline-icon"
+            fallback="🔁"
+          >
+            もういちど見る
+          </IconLabel>
         </button>
         <button className="btn btn-primary btn-big" onClick={onBack}>
           🏝️ まなび島にもどる

@@ -3,6 +3,7 @@ import type { Area } from '../types/game';
 import { SUBJECT_LABELS } from '../types/game';
 import { publicAssetUrl } from '../utils/assets';
 import type { AreaProgress } from '../utils/progress';
+import { IconLabel, UI_ICON_ASSETS } from './UiIcon';
 
 interface Props {
   area: Area;
@@ -55,7 +56,15 @@ export function AreaCard({ area, onSelect, progress, recommended }: Props) {
         <span className="area-badge area-badge-locked">じゅんびちゅう</span>
       ) : progress ? (
         progress.allCleared ? (
-          <span className="area-badge area-badge-cleared">✅ ぜんぶクリア</span>
+          <IconLabel
+            src={UI_ICON_ASSETS.clear}
+            alt="クリア"
+            className="area-badge area-badge-cleared"
+            iconClassName="ui-icon-sm"
+            fallback="✅"
+          >
+            ぜんぶクリア
+          </IconLabel>
         ) : progress.isNew ? (
           <span className="area-badge area-badge-open">✨ はじめよう</span>
         ) : (

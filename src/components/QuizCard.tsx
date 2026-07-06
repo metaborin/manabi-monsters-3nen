@@ -2,6 +2,7 @@ import { useState } from 'react';
 import type { Question } from '../types/game';
 import { shuffledIndices } from '../utils/shuffle';
 import { publicAssetUrl } from '../utils/assets';
+import { IconLabel, UI_ICON_ASSETS } from './UiIcon';
 
 const SKILL_HINT_URL = publicAssetUrl('assets/skills/skill_hint_icon_512.png');
 
@@ -114,7 +115,14 @@ export function QuizCard({
       {/* ヒントキャンディ */}
       {!answered && !hintShown && hintCount > 0 && (
         <button className="btn quiz-hint-btn" onClick={handleUseHint}>
-          🍬 ヒントをみる（のこり {hintCount}）
+          <IconLabel
+            src={UI_ICON_ASSETS.hintCandy}
+            alt="ヒントキャンディ"
+            iconClassName="button-inline-icon"
+            fallback="🍬"
+          >
+            ヒントをみる（のこり {hintCount}）
+          </IconLabel>
         </button>
       )}
       {hintShown && (
@@ -155,12 +163,30 @@ export function QuizCard({
           {/* まちがえたとき、やりなおしチケットがあれば1回やりなおせる */}
           {!wasCorrect && retryCount > 0 && (
             <button className="btn quiz-retry-btn" onClick={handleUseRetry}>
-              🎫 やりなおしチケットをつかう（のこり {retryCount}）
+              <IconLabel
+                src={UI_ICON_ASSETS.retryTicket}
+                alt="やりなおしチケット"
+                iconClassName="button-inline-icon"
+                fallback="🎫"
+              >
+                やりなおしチケットをつかう（のこり {retryCount}）
+              </IconLabel>
             </button>
           )}
 
           <button className="btn btn-primary btn-big" onClick={() => onNext(wasCorrect)}>
-            {isLast ? '🏆 けっかを見る' : '➡️ つぎへ'}
+            {isLast ? (
+              <IconLabel
+                src={UI_ICON_ASSETS.clear}
+                alt="クリア"
+                iconClassName="button-inline-icon"
+                fallback="🏆"
+              >
+                けっかを見る
+              </IconLabel>
+            ) : (
+              '➡️ つぎへ'
+            )}
           </button>
         </div>
       )}

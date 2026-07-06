@@ -364,6 +364,59 @@ label {
   font-size: 28px;
 }
 
+.ui-icon {
+  display: inline-block;
+  width: 1.35em;
+  height: 1.35em;
+  object-fit: contain;
+  flex: 0 0 auto;
+  vertical-align: -0.24em;
+}
+
+.ui-icon-fallback {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+.ui-icon-label {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35em;
+  min-width: 0;
+}
+
+.ui-icon-label-text {
+  min-width: 0;
+}
+
+.ui-icon-sm {
+  width: 1.15em;
+  height: 1.15em;
+}
+
+.ui-icon-md {
+  width: 1.45em;
+  height: 1.45em;
+}
+
+.ui-icon-lg {
+  width: 2.25rem;
+  height: 2.25rem;
+}
+
+.status-icon {
+  width: 32px;
+  height: 32px;
+}
+
+.button-inline-icon {
+  width: 1.25em;
+  height: 1.25em;
+}
+
 .status-label {
   font-size: 14px;
   color: #7a86a5;
@@ -1973,7 +2026,9 @@ label {
   line-height: 1.5;
 }
 .quest-partner-bonus-note {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3em;
   margin-left: 4px;
   color: #c07a0a;
 }
@@ -2104,6 +2159,12 @@ label {
   font-size: 50px;
   filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.25));
 }
+.boss-card-lock-icon {
+  position: absolute;
+  width: 52px;
+  height: 52px;
+  filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.25));
+}
 .boss-card-name {
   font-size: 22px;
   color: #6a3ea0;
@@ -2156,6 +2217,10 @@ label {
   font-size: 44px;
   line-height: 1;
   flex-shrink: 0;
+}
+.badge-get-icon .ui-icon {
+  width: 58px;
+  height: 58px;
 }
 .badge-get-text {
   font-size: 18px;
@@ -2258,6 +2323,10 @@ label {
   color: #c07a0a;
 }
 .temple-badge-progress {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4em;
   font-size: 16px;
   font-weight: bold;
   color: #5a6580;
@@ -2265,13 +2334,25 @@ label {
   border-radius: 999px;
   padding: 6px 16px;
 }
+.temple-badge-progress .ui-icon {
+  width: 1.4em;
+  height: 1.4em;
+}
 .temple-status {
   width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4em;
   font-size: 16px;
   font-weight: bold;
   line-height: 1.5;
   border-radius: 12px;
   padding: 10px 12px;
+}
+.temple-status .ui-icon {
+  width: 1.35em;
+  height: 1.35em;
 }
 .temple-status-locked {
   color: #6a7590;
@@ -2402,11 +2483,19 @@ label {
 }
 
 .clear-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4em;
   font-size: 18px;
   font-weight: bold;
   border-radius: 999px;
   padding: 10px 20px;
   animation: slide-up 0.4s ease;
+}
+.clear-badge .ui-icon {
+  width: 1.45em;
+  height: 1.45em;
 }
 
 .clear-badge-first {
@@ -2443,9 +2532,16 @@ label {
 }
 
 .result-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35em;
   font-size: 18px;
   font-weight: bold;
   color: #4a5a7a;
+}
+.result-label .ui-icon {
+  width: 1.3em;
+  height: 1.3em;
 }
 
 .result-value {
@@ -2550,6 +2646,12 @@ label {
 
 .dex-emoji {
   font-size: 48px;
+}
+.dex-unknown-icon {
+  width: 76px;
+  height: 76px;
+  opacity: 0.9;
+  filter: drop-shadow(0 4px 6px rgba(86, 95, 130, 0.12));
 }
 
 .dex-name {
@@ -2763,6 +2865,10 @@ label {
 .island-stat-emoji {
   font-size: 26px;
 }
+.island-stat-icon {
+  width: 30px;
+  height: 30px;
+}
 
 .island-stat-label {
   font-size: 14px;
@@ -2826,6 +2932,12 @@ label {
 .island-monster-emoji,
 .island-item-emoji {
   font-size: 44px;
+}
+.island-unknown-icon {
+  width: 68px;
+  height: 68px;
+  opacity: 0.9;
+  filter: drop-shadow(0 4px 6px rgba(86, 95, 130, 0.12));
 }
 
 .island-monster-name,

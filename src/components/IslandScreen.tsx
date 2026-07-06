@@ -6,6 +6,7 @@ import { SHOP_ITEMS } from '../data/shopItems';
 import { getBossQuests, countEarnedBadges, TOTAL_SUBJECT_BADGES } from '../data/quests';
 import { publicAssetUrl } from '../utils/assets';
 import { MonsterImage } from './MonsterImage';
+import { IconLabel, UiIcon, UI_ICON_ASSETS } from './UiIcon';
 
 interface Props {
   player: PlayerState;
@@ -58,14 +59,36 @@ function TempleCard({
       </div>
       <h3 className="temple-name">まなびのしんでん</h3>
       <div className="temple-badge-progress">
-        🏅 きょうかバッジ {earnedBadges} / {TOTAL_SUBJECT_BADGES}
+        <UiIcon
+          src={UI_ICON_ASSETS.subjectBadgeGeneric}
+          alt="教科バッジ"
+          className="ui-icon-sm"
+          fallback="🏅"
+        />
+        きょうかバッジ {earnedBadges} / {TOTAL_SUBJECT_BADGES}
       </div>
 
       {cleared ? (
         <>
-          <div className="temple-status temple-status-cleared">🎉 しんでんクリアずみ！</div>
+          <div className="temple-status temple-status-cleared">
+            <IconLabel
+              src={UI_ICON_ASSETS.clear}
+              alt="クリア"
+              iconClassName="ui-icon-sm"
+              fallback="🎉"
+            >
+              しんでんクリアずみ！
+            </IconLabel>
+          </div>
           <button className="btn btn-primary btn-big" onClick={onEnterTemple}>
-            🔁 エンディングをもういちど見る
+            <IconLabel
+              src={UI_ICON_ASSETS.retry}
+              alt="リトライ"
+              iconClassName="button-inline-icon"
+              fallback="🔁"
+            >
+              エンディングをもういちど見る
+            </IconLabel>
           </button>
         </>
       ) : unlocked ? (
@@ -74,12 +97,26 @@ function TempleCard({
             ✨ まなびのしんでんが ひらいたよ！
           </div>
           <button className="btn btn-primary btn-big" onClick={onEnterTemple}>
-            🚪 しんでんに はいる
+            <IconLabel
+              src={UI_ICON_ASSETS.challenge}
+              alt="挑戦"
+              iconClassName="button-inline-icon"
+              fallback="🚪"
+            >
+              しんでんに はいる
+            </IconLabel>
           </button>
         </>
       ) : (
         <div className="temple-status temple-status-locked">
-          🔒 あと {TOTAL_SUBJECT_BADGES - earnedBadges}こバッジを集めると ひらくよ！
+          <IconLabel
+            src={UI_ICON_ASSETS.lock}
+            alt="ロック"
+            iconClassName="ui-icon-sm"
+            fallback="🔒"
+          >
+            あと {TOTAL_SUBJECT_BADGES - earnedBadges}こバッジを集めると ひらくよ！
+          </IconLabel>
         </div>
       )}
     </div>
@@ -152,7 +189,12 @@ export function IslandScreen({ player, onBack, onOpenShop, onEnterTemple }: Prop
           </span>
         </div>
         <div className="card island-stat">
-          <span className="island-stat-emoji">🏅</span>
+          <UiIcon
+            src={UI_ICON_ASSETS.subjectBadgeGeneric}
+            alt="教科バッジ"
+            className="island-stat-icon"
+            fallback="🏅"
+          />
           <span className="island-stat-label">教科バッジ</span>
           <span className="island-stat-value">
             {earnedBadges} / {bossQuests.length}
@@ -183,7 +225,12 @@ export function IslandScreen({ player, onBack, onOpenShop, onEnterTemple }: Prop
                     fallbackClassName="island-monster-emoji"
                   />
                 ) : (
-                  <span className="island-monster-emoji">❓</span>
+                  <UiIcon
+                    src={UI_ICON_ASSETS.unknown}
+                    alt="未入手"
+                    className="island-unknown-icon"
+                    fallback="❓"
+                  />
                 )}
               </div>
               <span className="island-monster-name">{owned ? monster.name : '？？？'}</span>
@@ -207,7 +254,16 @@ export function IslandScreen({ player, onBack, onOpenShop, onEnterTemple }: Prop
           const owned = player.purchasedItemIds.includes(item.id);
           return (
             <div key={item.id} className={`card island-item ${owned ? '' : 'island-locked'}`}>
-              <span className="island-item-emoji">{owned ? item.emoji : '❓'}</span>
+              {owned ? (
+                <span className="island-item-emoji">{item.emoji}</span>
+              ) : (
+                <UiIcon
+                  src={UI_ICON_ASSETS.unknown}
+                  alt="未入手"
+                  className="island-unknown-icon"
+                  fallback="❓"
+                />
+              )}
               <span className="island-item-name">{owned ? item.name : '？？？'}</span>
               {owned ? (
                 <>

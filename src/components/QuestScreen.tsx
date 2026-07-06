@@ -17,6 +17,7 @@ import { shuffledIndices } from '../utils/shuffle';
 import { publicAssetUrl } from '../utils/assets';
 import { QuizCard } from './QuizCard';
 import { MonsterImage } from './MonsterImage';
+import { IconLabel, UI_ICON_ASSETS } from './UiIcon';
 
 interface Props {
   area: Area;
@@ -243,7 +244,16 @@ export function QuestScreen({
 
           {/* 相棒をえらぶ */}
           <div className="quest-partner-panel">
-            <p className="quest-partner-title">🤝 いっしょに行くモンスターをえらぼう</p>
+            <p className="quest-partner-title">
+              <IconLabel
+                src={UI_ICON_ASSETS.partnerBonus}
+                alt="相棒"
+                iconClassName="button-inline-icon"
+                fallback="🤝"
+              >
+                いっしょに行くモンスターをえらぼう
+              </IconLabel>
+            </p>
             {ownedMonsters.length > 0 ? (
               <>
                 <div className="quest-partner-choices">
@@ -278,11 +288,24 @@ export function QuestScreen({
                 </div>
                 {partner && (
                   <p className="quest-partner-selected">
-                    ✨ {partner.name}と いっしょに行く！
+                    <IconLabel
+                      src={UI_ICON_ASSETS.partnerBonus}
+                      alt="相棒"
+                      iconClassName="ui-icon-sm"
+                      fallback="🤝"
+                    >
+                      {partner.name}と いっしょに行く！
+                    </IconLabel>
                     {subjectMatch && (
-                      <span className="quest-partner-bonus-note">
+                      <IconLabel
+                        src={UI_ICON_ASSETS.partnerBonus}
+                        alt="相棒ボーナス"
+                        className="quest-partner-bonus-note"
+                        iconClassName="ui-icon-sm"
+                        fallback="🤝"
+                      >
                         きょうかが同じ！クリアで +{PARTNER_SUBJECT_BONUS}コイン
-                      </span>
+                      </IconLabel>
                     )}
                   </p>
                 )}
@@ -301,30 +324,65 @@ export function QuestScreen({
               <div className="quest-help-list">
                 {coinBoost ? (
                   <div className="quest-help-active">
-                    ⭐ コインアップちゅう！クリアで +{COIN_STAR_BONUS}コイン
+                    <IconLabel
+                      src={UI_ICON_ASSETS.coinStar}
+                      alt="コインアップ"
+                      iconClassName="button-inline-icon"
+                      fallback="⭐"
+                    >
+                      コインアップちゅう！クリアで +{COIN_STAR_BONUS}コイン
+                    </IconLabel>
                   </div>
                 ) : (
                   coinStarCount > 0 && (
                     <button className="btn quest-help-use-btn" onClick={useCoinStar}>
-                      ⭐ コインアップスターをつかう（のこり {coinStarCount}）
+                      <IconLabel
+                        src={UI_ICON_ASSETS.coinStar}
+                        alt="コインアップスター"
+                        iconClassName="button-inline-icon"
+                        fallback="⭐"
+                      >
+                        コインアップスターをつかう（のこり {coinStarCount}）
+                      </IconLabel>
                     </button>
                   )
                 )}
                 {hintCount > 0 && (
                   <div className="quest-help-chip">
-                    🍬 ヒントキャンディ ×{hintCount}
+                    <IconLabel
+                      src={UI_ICON_ASSETS.hintCandy}
+                      alt="ヒントキャンディ"
+                      iconClassName="button-inline-icon"
+                      fallback="🍬"
+                    >
+                      ヒントキャンディ ×{hintCount}
+                    </IconLabel>
                     <span className="quest-help-note">問題でつかえるよ</span>
                   </div>
                 )}
                 {retryCount > 0 && (
                   <div className="quest-help-chip">
-                    🎫 やりなおしチケット ×{retryCount}
+                    <IconLabel
+                      src={UI_ICON_ASSETS.retryTicket}
+                      alt="やりなおしチケット"
+                      iconClassName="button-inline-icon"
+                      fallback="🎫"
+                    >
+                      やりなおしチケット ×{retryCount}
+                    </IconLabel>
                     <span className="quest-help-note">まちがえたときつかえるよ</span>
                   </div>
                 )}
                 {heartCookieCount > 0 && (
                   <div className="quest-help-chip">
-                    🍪 ハートクッキー ×{heartCookieCount}
+                    <IconLabel
+                      src={UI_ICON_ASSETS.heartCookie}
+                      alt="ハートクッキー"
+                      iconClassName="button-inline-icon"
+                      fallback="🍪"
+                    >
+                      ハートクッキー ×{heartCookieCount}
+                    </IconLabel>
                     <span className="quest-help-note">ハートをかいふくできるよ</span>
                   </div>
                 )}
@@ -335,7 +393,14 @@ export function QuestScreen({
           </div>
 
           <button className="btn btn-primary btn-big" onClick={startQuiz}>
-            ⚔️ クエストスタート！
+            <IconLabel
+              src={UI_ICON_ASSETS.challenge}
+              alt="挑戦"
+              iconClassName="button-inline-icon"
+              fallback="⚔️"
+            >
+              クエストスタート！
+            </IconLabel>
           </button>
           <button className="btn btn-plain btn-small" onClick={onBack}>
             ↩️ もどる
@@ -357,7 +422,14 @@ export function QuestScreen({
             まちがえた問題は、かいせつを読むとつぎにいかせるよ。
           </p>
           <button className="btn btn-primary btn-big" onClick={restartQuest}>
-            🔁 もういちど
+            <IconLabel
+              src={UI_ICON_ASSETS.retry}
+              alt="リトライ"
+              iconClassName="button-inline-icon"
+              fallback="🔁"
+            >
+              もういちど
+            </IconLabel>
           </button>
           <button className="btn btn-plain btn-small" onClick={onBack}>
             🗺️ エリアにもどる
@@ -380,7 +452,14 @@ export function QuestScreen({
         </div>
         {hearts < MAX_HEARTS && heartCookieCount > 0 && (
           <button className="btn quest-heart-heal-btn" onClick={useHeartCookie}>
-            🍪 ハートかいふく（のこり {heartCookieCount}）
+            <IconLabel
+              src={UI_ICON_ASSETS.heartCookie}
+              alt="ハートクッキー"
+              iconClassName="button-inline-icon"
+              fallback="🍪"
+            >
+              ハートかいふく（のこり {heartCookieCount}）
+            </IconLabel>
           </button>
         )}
       </div>
@@ -396,7 +475,25 @@ export function QuestScreen({
           <div className="quest-partner-strip-text">
             <span className="quest-partner-strip-name">あいぼう：{partner.name}</span>
             <span className="quest-partner-strip-skill">
-              {skillUsed ? '✅ スキルをつかったよ' : '✨ 相棒スキル：ヒントがつかえるよ'}
+              {skillUsed ? (
+                <IconLabel
+                  src={UI_ICON_ASSETS.clear}
+                  alt="使用済み"
+                  iconClassName="ui-icon-sm"
+                  fallback="✅"
+                >
+                  スキルをつかったよ
+                </IconLabel>
+              ) : (
+                <IconLabel
+                  src={UI_ICON_ASSETS.partnerBonus}
+                  alt="相棒スキル"
+                  iconClassName="ui-icon-sm"
+                  fallback="✨"
+                >
+                  相棒スキル：ヒントがつかえるよ
+                </IconLabel>
+              )}
             </span>
           </div>
         </div>
@@ -419,7 +516,16 @@ export function QuestScreen({
         onUsePartnerSkill={() => setSkillUsed(true)}
       />
       {coinBoost && (
-        <div className="quest-boost-banner">⭐ コインアップちゅう！クリアで +{COIN_STAR_BONUS}コイン</div>
+        <div className="quest-boost-banner">
+          <IconLabel
+            src={UI_ICON_ASSETS.coinStar}
+            alt="コインアップ"
+            iconClassName="button-inline-icon"
+            fallback="⭐"
+          >
+            コインアップちゅう！クリアで +{COIN_STAR_BONUS}コイン
+          </IconLabel>
+        </div>
       )}
     </div>
   );

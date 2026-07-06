@@ -12,6 +12,7 @@ import {
   BossQuestCard,
   type QuestState,
 } from './QuestCardParts';
+import { IconLabel, UI_ICON_ASSETS } from './UiIcon';
 
 /** 教科ボスを解放するのに必要な、同じ教科の通常クエストのクリア数 */
 const BOSS_UNLOCK_NEEDED = 2;
@@ -95,7 +96,25 @@ export function QuestSelectScreen({ area, quests, clearedQuestIds, onSelectQuest
               </div>
 
               <button className="btn btn-primary btn-big" onClick={() => onSelectQuest(quest)}>
-                {cleared ? '🔁 練習する' : '⚔️ ちょうせんする'}
+                {cleared ? (
+                  <IconLabel
+                    src={UI_ICON_ASSETS.retry}
+                    alt="リトライ"
+                    iconClassName="button-inline-icon"
+                    fallback="🔁"
+                  >
+                    練習する
+                  </IconLabel>
+                ) : (
+                  <IconLabel
+                    src={UI_ICON_ASSETS.challenge}
+                    alt="挑戦"
+                    iconClassName="button-inline-icon"
+                    fallback="⚔️"
+                  >
+                    ちょうせんする
+                  </IconLabel>
+                )}
               </button>
             </div>
           );

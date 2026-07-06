@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import type { Monster, Quest } from '../types/game';
 import { publicAssetUrl } from '../utils/assets';
+import { IconLabel, UiIcon, UI_ICON_ASSETS } from './UiIcon';
 
 /**
  * クエスト選択カードの見た目パーツ（v0.8.7）。
@@ -208,7 +209,18 @@ export function QuestFriendReward({ monster, cleared }: { monster: Monster; clea
         <span className="quest-reward-caption">なかま</span>
         <span className="quest-friend-name">{monster.name}</span>
         <span className={`quest-friend-state ${cleared ? 'is-cleared' : ''}`}>
-          {cleared ? '✅ なかま' : 'クリアで なかま'}
+          {cleared ? (
+            <IconLabel
+              src={UI_ICON_ASSETS.clear}
+              alt="クリア"
+              iconClassName="ui-icon-sm"
+              fallback="✅"
+            >
+              なかま
+            </IconLabel>
+          ) : (
+            'クリアで なかま'
+          )}
         </span>
       </div>
     </div>
@@ -257,34 +269,74 @@ export function BossQuestCard({
           </span>
         )}
         {!unlocked && (
-          <span className="boss-card-lock" aria-hidden="true">
-            🔒
-          </span>
+          <UiIcon
+            src={UI_ICON_ASSETS.lock}
+            alt="ロック"
+            className="boss-card-lock-icon"
+            fallback="🔒"
+            decorative
+          />
         )}
       </div>
       <h3 className="boss-card-name">{quest.name}</h3>
       <div className="boss-card-info">
         <span className="boss-card-chip">📚 {count}問</span>
         <span className="boss-card-chip">❤️ ハート3つ</span>
-        <span className="boss-card-chip">🏅 {subjectLabel}バッジ</span>
+        <IconLabel
+          src={UI_ICON_ASSETS.subjectBadgeGeneric}
+          alt="教科バッジ"
+          className="boss-card-chip"
+          iconClassName="ui-icon-sm"
+          fallback="🏅"
+        >
+          {subjectLabel}バッジ
+        </IconLabel>
       </div>
 
       {cleared ? (
         <>
           <div className="boss-card-status boss-card-status-cleared">
-            ✅ {subjectLabel}バッジ かくとくずみ！
+            <IconLabel
+              src={UI_ICON_ASSETS.clear}
+              alt="クリア"
+              iconClassName="ui-icon-sm"
+              fallback="✅"
+            >
+              {subjectLabel}バッジ かくとくずみ！
+            </IconLabel>
           </div>
           <button className="btn btn-primary btn-big" onClick={onSelect}>
-            🔁 もういちど
+            <IconLabel
+              src={UI_ICON_ASSETS.retry}
+              alt="リトライ"
+              iconClassName="button-inline-icon"
+              fallback="🔁"
+            >
+              もういちど
+            </IconLabel>
           </button>
         </>
       ) : unlocked ? (
         <button className="btn btn-primary btn-big" onClick={onSelect}>
-          ⚔️ ボスにちょうせんする
+          <IconLabel
+            src={UI_ICON_ASSETS.challenge}
+            alt="挑戦"
+            iconClassName="button-inline-icon"
+            fallback="⚔️"
+          >
+            ボスにちょうせんする
+          </IconLabel>
         </button>
       ) : (
         <div className="boss-card-status boss-card-status-locked">
-          🔒 あと {remaining}こクリアで ボスにちょうせん！
+          <IconLabel
+            src={UI_ICON_ASSETS.lock}
+            alt="ロック"
+            iconClassName="ui-icon-sm"
+            fallback="🔒"
+          >
+            あと {remaining}こクリアで ボスにちょうせん！
+          </IconLabel>
         </div>
       )}
     </div>

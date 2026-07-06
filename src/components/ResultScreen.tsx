@@ -2,6 +2,7 @@ import type { Monster, QuestResult } from '../types/game';
 import { SUBJECT_LABELS } from '../types/game';
 import { getLevelInfo } from '../utils/level';
 import { MonsterImage } from './MonsterImage';
+import { IconLabel, SubjectBadgeIcon, UI_ICON_ASSETS } from './UiIcon';
 
 interface Props {
   result: QuestResult;
@@ -44,11 +45,23 @@ export function ResultScreen({
         </h2>
 
         {result.isFirstClear ? (
-          <div className="clear-badge clear-badge-first">✨ 初回クリアボーナス！ ✨</div>
+          <IconLabel
+            src={UI_ICON_ASSETS.clear}
+            alt="クリア"
+            className="clear-badge clear-badge-first"
+            fallback="✨"
+          >
+            初回クリアボーナス！
+          </IconLabel>
         ) : (
-          <div className="clear-badge clear-badge-practice">
-            🔁 れんしゅうクリア（コインは半分だよ）
-          </div>
+          <IconLabel
+            src={UI_ICON_ASSETS.retry}
+            alt="リトライ"
+            className="clear-badge clear-badge-practice"
+            fallback="🔁"
+          >
+            れんしゅうクリア（コインは半分だよ）
+          </IconLabel>
         )}
 
         <p className="result-message">{resultMessage(result.correctCount, result.totalCount)}</p>
@@ -71,25 +84,53 @@ export function ResultScreen({
             <span className="result-value">{accuracy}%</span>
           </div>
           <div className="result-row">
-            <span className="result-label">🪙 かくとくコイン</span>
+            <IconLabel
+              src={UI_ICON_ASSETS.coin}
+              alt="コイン"
+              className="result-label"
+              fallback="🪙"
+            >
+              かくとくコイン
+            </IconLabel>
             <span className="result-value">
               +{result.earnedCoins - (result.coinBonus ?? 0) - (result.partnerBonus ?? 0)}
             </span>
           </div>
           {(result.coinBonus ?? 0) > 0 && (
             <div className="result-row result-row-bonus">
-              <span className="result-label">⭐ コインアップ</span>
+              <IconLabel
+                src={UI_ICON_ASSETS.coinStar}
+                alt="コインアップ"
+                className="result-label"
+                fallback="⭐"
+              >
+                コインアップ
+              </IconLabel>
               <span className="result-value">+{result.coinBonus}</span>
             </div>
           )}
           {(result.partnerBonus ?? 0) > 0 && (
             <div className="result-row result-row-bonus">
-              <span className="result-label">🤝 相棒ボーナス</span>
+              <IconLabel
+                src={UI_ICON_ASSETS.partnerBonus}
+                alt="相棒ボーナス"
+                className="result-label"
+                fallback="🤝"
+              >
+                相棒ボーナス
+              </IconLabel>
               <span className="result-value">+{result.partnerBonus}</span>
             </div>
           )}
           <div className="result-row">
-            <span className="result-label">⭐ かくとくけいけんち</span>
+            <IconLabel
+              src={UI_ICON_ASSETS.exp}
+              alt="経験値"
+              className="result-label"
+              fallback="⭐"
+            >
+              かくとくけいけんち
+            </IconLabel>
             <span className="result-value">+{result.earnedExp}</span>
           </div>
           <div className="result-row">
@@ -122,7 +163,7 @@ export function ResultScreen({
         {result.badgeSubject && (
           <div className="badge-get">
             <span className="badge-get-icon" aria-hidden="true">
-              🏅
+              <SubjectBadgeIcon subject={result.badgeSubject} decorative />
             </span>
             {result.isFirstClear ? (
               <p className="badge-get-text">

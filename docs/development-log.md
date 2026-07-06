@@ -341,3 +341,22 @@ Vite base（/manabi-monsters-3nen/）・PWA・Service Worker・manifest・アイ
 既存のクエスト/問題/モンスター/ショップアイテムID・v0.9.0〜v0.9.3の機能（通常/ボスクエスト・モンスター獲得・
 アイテム・ハート・相棒スキル・教科バッジ）・図鑑・ショップ・まなび島・リセット・Vite base
 （/manabi-monsters-3nen/）・PWA・Service Worker・manifest・アイコンは変更なし。
+
+## v1.0.1
+絵文字UIの主要アイコン画像化。画面露出が多く、意味を持つ絵文字アイコンを中心に、
+既存画像またはv1.0.1用の本番画像へ置き換えた。
+- 共通部品：UiIcon / IconLabel / SubjectBadgeIcon を追加。publicAssetUrl 経由で GitHub Pages の
+  base（/manabi-monsters-3nen/）に対応し、画像が読めない場合は従来の絵文字へフォールバック。
+- 置き換え対象：
+  ・経験値（ホーム/結果）→ ui_exp_icon_512.png。
+  ・相棒ボーナス/相棒スキル案内（クエスト開始/クエスト中/結果）→ ui_partner_bonus_icon_512.png。
+  ・教科バッジ（ボスカード/結果/まなび島の神殿・島ステータス）→ ui_subject_badge_generic_512.png
+    または教科別 ui_badge_*_512.png。
+  ・クリア/ロック/挑戦/リトライ（クエストカード、ボスカード、結果、神殿、クイズ終端など）→
+    ui_clear_icon_512.png / ui_lock_icon_512.png / ui_challenge_icon_512.png / ui_retry_icon_512.png。
+  ・未入手/不明（図鑑、まなび島の未入手モンスター・アイテム）→ ui_unknown_placeholder_512.png。
+  ・ヒントキャンディ、やりなおしチケット、ハートクッキー、コインアップスターは既存の本番アイテム画像を流用。
+- 画像：本番採用は public/assets/ui/ に汎用UIアイコン7枚、
+  public/assets/badges/ に教科バッジ6枚をコピー。試作用素材フォルダはコードから参照しない・コミットに含めない。
+既存の保存キー・保存データ構造・クエストID・問題ID・モンスターID・ショップアイテムID・報酬処理・
+Vite base（/manabi-monsters-3nen/）・PWA・Service Worker・manifest・GitHub Actions設定は変更なし。

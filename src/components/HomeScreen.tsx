@@ -9,6 +9,7 @@ import { publicAssetUrl } from '../utils/assets';
 import { AreaCard } from './AreaCard';
 import { MapSpotCard } from './MapSpotCard';
 import { IslandMap } from './IslandMap';
+import { IconLabel, UiIcon, UI_ICON_ASSETS } from './UiIcon';
 
 interface Props {
   player: PlayerState;
@@ -92,7 +93,15 @@ export function HomeScreen({
       <div className="card level-card">
         <div className="level-card-top">
           <span className="level-badge">レベル {levelInfo.level}</span>
-          <span className="level-exp">⭐ {player.exp} EXP</span>
+          <IconLabel
+            src={UI_ICON_ASSETS.exp}
+            alt="経験値"
+            className="level-exp"
+            iconClassName="ui-icon-sm"
+            fallback="⭐"
+          >
+            {player.exp} EXP
+          </IconLabel>
         </div>
         <div className="level-bar">
           <div
@@ -109,12 +118,22 @@ export function HomeScreen({
 
       <div className="status-row">
         <div className="card status-card">
-          <span className="status-emoji">🪙</span>
+          <UiIcon
+            src={UI_ICON_ASSETS.coin}
+            alt="コイン"
+            className="status-icon"
+            fallback="🪙"
+          />
           <span className="status-label">コイン</span>
           <span className="status-value">{player.coins}</span>
         </div>
         <div className="card status-card">
-          <span className="status-emoji">⭐</span>
+          <UiIcon
+            src={UI_ICON_ASSETS.exp}
+            alt="経験値"
+            className="status-icon"
+            fallback="⭐"
+          />
           <span className="status-label">けいけんち</span>
           <span className="status-value">{player.exp}</span>
         </div>

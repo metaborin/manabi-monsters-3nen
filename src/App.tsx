@@ -136,6 +136,8 @@ export default function App() {
       isFirstClear,
       coinBonus,
       partnerBonus,
+      // 教科ボスをクリアしたら、その教科のバッジ（結果画面の表示用）
+      badgeSubject: currentQuest.isBoss ? currentArea?.subject : undefined,
     };
     setLevelBeforeQuest(getLevelInfo(player.exp).level);
     applyQuestResult(result);

@@ -9,8 +9,12 @@ import {
   QuestStagePlate,
   QuestCoinReward,
   QuestFriendReward,
+  BossQuestCard,
   type QuestState,
 } from './QuestCardParts';
+
+/** 教科ボスを解放するのに必要な、同じ教科の通常クエストのクリア数 */
+const BOSS_UNLOCK_NEEDED = 2;
 
 interface Props {
   area: Area;
@@ -26,8 +30,16 @@ export function QuestSelectScreen({ area, quests, clearedQuestIds, onSelectQuest
     ? ({ '--area-bg-image': `url("${backgroundImageUrl}")` } as CSSProperties)
     : undefined;
 
-  // このエリアで「次に遊ぶとよい」クエスト = 最初の未クリアクエスト
-  const recommendedQuestId = quests.find((q) => !clearedQuestIds.includes(q.id))?.id;
+  // 通常クエストとボスクエストを分ける（ステージ番号にボスは含めない）
+  const normalQuests = quests.filter((q) => !q.isBoss);
+  const bossQuests = quests.filter((q) => q.isBoss);
+  // 同じ教科の通常クエストを何個クリアしたか（ボス解放の判定）
+  const normalClearedCount = normalQuests.filter((q) => clearedQuestIds.includes(q.id)).length;
+  const bossUnlocked = normalClearedCount >= BOSS_UNLOCK_NEEDED;
+  const bossRemaining = Math.max(0, BOSS_UNLOCK_NEEDED - normalClearedCount);
+
+  // このエリアで「次に遊ぶとよい」通常クエスト = 最初の未クリア通常クエスト
+  const recommendedQuestId = normalQuests.find((q) => !clearedQuestIds.includes(q.id))?.id;
 
   return (
     <div className="screen quest-select-screen area-background-screen" style={backgroundStyle}>
@@ -41,7 +53,7 @@ export function QuestSelectScreen({ area, quests, clearedQuestIds, onSelectQuest
       </header>
 
       <div className="quest-list">
-        {quests.map((quest, index) => {
+        {normalQuests.map((quest, index) => {
           const cleared = clearedQuestIds.includes(quest.id);
           const recommended = quest.id === recommendedQuestId;
           const count = quest.questionCount ?? quest.questionIds.length;
@@ -89,6 +101,26 @@ export function QuestSelectScreen({ area, quests, clearedQuestIds, onSelectQuest
           );
         })}
       </div>
+
+      {/* 教科ボスしれん */}
+      {bossQuests.length > 0 && (
+        <>
+          <h3 className="section-title quest-boss-heading">👑 ボスしれん</h3>
+          <div className="quest-list">
+            {bossQuests.map((boss) => (
+              <BossQuestCard
+                key={boss.id}
+                quest={boss}
+                subjectLabel={SUBJECT_LABELS[area.subject]}
+                cleared={clearedQuestIds.includes(boss.id)}
+                unlocked={bossUnlocked}
+                remaining={bossRemaining}
+                onSelect={() => onSelectQuest(boss)}
+              />
+            ))}
+          </div>
+        </>
+      )}
 
       <button className="btn btn-plain btn-small" onClick={onBack}>
         🗺️ 島マップへもどる

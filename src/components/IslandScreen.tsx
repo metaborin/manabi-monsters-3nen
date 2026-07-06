@@ -2,6 +2,7 @@ import type { PlayerState } from '../types/game';
 import { SUBJECT_LABELS } from '../types/game';
 import { MONSTERS } from '../data/monsters';
 import { SHOP_ITEMS } from '../data/shopItems';
+import { getBossQuests } from '../data/quests';
 import { MonsterImage } from './MonsterImage';
 
 interface Props {
@@ -27,6 +28,10 @@ export function IslandScreen({ player, onBack, onOpenShop }: Props) {
 
   const dexComplete = MONSTERS.every((m) => player.monsterIds.includes(m.id));
   const hasFlag = player.purchasedItemIds.includes(FLAG_ITEM_ID);
+
+  // 教科バッジ（ボスクエストをクリアした数）
+  const bossQuests = getBossQuests();
+  const earnedBadges = bossQuests.filter((q) => player.clearedQuestIds.includes(q.id)).length;
 
   return (
     <div className="screen island-screen">
@@ -64,6 +69,13 @@ export function IslandScreen({ player, onBack, onOpenShop }: Props) {
           <span className="island-stat-label">アイテム</span>
           <span className="island-stat-value">
             {ownedItems} / {SHOP_ITEMS.length}
+          </span>
+        </div>
+        <div className="card island-stat">
+          <span className="island-stat-emoji">🏅</span>
+          <span className="island-stat-label">教科バッジ</span>
+          <span className="island-stat-value">
+            {earnedBadges} / {bossQuests.length}
           </span>
         </div>
         <div className="card island-stat island-stat-wide">

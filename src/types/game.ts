@@ -54,6 +54,10 @@ export interface Quest {
   questionCount?: number;
   /** 初回クリアで仲間になるモンスター。いないクエストは null */
   rewardMonsterId: string | null;
+  /** true のとき教科ボスクエスト（クリアで教科バッジ）。v0.9.3 */
+  isBoss?: boolean;
+  /** ボス画像パス（ボスクエストのみ）。v0.9.3 */
+  bossImage?: string;
 }
 
 /** モンスター */
@@ -110,4 +114,6 @@ export interface QuestResult {
   coinBonus?: number;
   /** 相棒モンスターの教科一致で増えたコイン数（なければ 0）。v0.9.2 */
   partnerBonus?: number;
+  /** ボスクエストのクリアで手に入れた教科バッジの教科（ボス以外は undefined）。v0.9.3 */
+  badgeSubject?: Subject;
 }

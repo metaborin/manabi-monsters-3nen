@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import type { Monster } from '../types/game';
+import type { Monster, Quest } from '../types/game';
 import { publicAssetUrl } from '../utils/assets';
 
 /**
@@ -211,6 +211,82 @@ export function QuestFriendReward({ monster, cleared }: { monster: Monster; clea
           {cleared ? '✅ なかま' : 'クリアで なかま'}
         </span>
       </div>
+    </div>
+  );
+}
+
+/** 教科ボスクエストのカード（v0.9.3）。ロック／解放／クリア済みで表示を変える。 */
+export function BossQuestCard({
+  quest,
+  subjectLabel,
+  cleared,
+  unlocked,
+  remaining,
+  onSelect,
+}: {
+  quest: Quest;
+  /** 教科名（例：国語） */
+  subjectLabel: string;
+  cleared: boolean;
+  unlocked: boolean;
+  /** あと何個 通常クエストをクリアすると解放されるか */
+  remaining: number;
+  onSelect: () => void;
+}) {
+  const [imgFailed, setImgFailed] = useState(false);
+  const bossUrl = publicAssetUrl(quest.bossImage);
+  const count = quest.questionCount ?? quest.questionIds.length;
+  const cardState = cleared ? 'boss-card-cleared' : unlocked ? 'boss-card-open' : 'boss-card-locked';
+
+  return (
+    <div className={`card boss-card ${cardState}`}>
+      <span className="boss-card-tag">👑 ボスしれん</span>
+      <div className="boss-card-media">
+        {bossUrl && !imgFailed ? (
+          <img
+            className={`boss-card-img ${unlocked ? '' : 'boss-card-img-locked'}`}
+            src={bossUrl}
+            alt={quest.name}
+            loading="lazy"
+            decoding="async"
+            onError={() => setImgFailed(true)}
+          />
+        ) : (
+          <span className="boss-card-emoji" aria-hidden="true">
+            👑
+          </span>
+        )}
+        {!unlocked && (
+          <span className="boss-card-lock" aria-hidden="true">
+            🔒
+          </span>
+        )}
+      </div>
+      <h3 className="boss-card-name">{quest.name}</h3>
+      <div className="boss-card-info">
+        <span className="boss-card-chip">📚 {count}問</span>
+        <span className="boss-card-chip">❤️ ハート3つ</span>
+        <span className="boss-card-chip">🏅 {subjectLabel}バッジ</span>
+      </div>
+
+      {cleared ? (
+        <>
+          <div className="boss-card-status boss-card-status-cleared">
+            ✅ {subjectLabel}バッジ かくとくずみ！
+          </div>
+          <button className="btn btn-primary btn-big" onClick={onSelect}>
+            🔁 もういちど
+          </button>
+        </>
+      ) : unlocked ? (
+        <button className="btn btn-primary btn-big" onClick={onSelect}>
+          ⚔️ ボスにちょうせんする
+        </button>
+      ) : (
+        <div className="boss-card-status boss-card-status-locked">
+          🔒 あと {remaining}こクリアで ボスにちょうせん！
+        </div>
+      )}
     </div>
   );
 }

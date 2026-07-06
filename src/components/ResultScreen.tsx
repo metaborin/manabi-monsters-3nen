@@ -1,4 +1,5 @@
 import type { Monster, QuestResult } from '../types/game';
+import { SUBJECT_LABELS } from '../types/game';
 import { getLevelInfo } from '../utils/level';
 import { MonsterImage } from './MonsterImage';
 
@@ -113,6 +114,23 @@ export function ResultScreen({
                 {rewardMonster.name}はもう仲間だよ。
                 <br />
                 たくさん練習してレベルアップを目指そう！
+              </p>
+            )}
+          </div>
+        )}
+
+        {result.badgeSubject && (
+          <div className="badge-get">
+            <span className="badge-get-icon" aria-hidden="true">
+              🏅
+            </span>
+            {result.isFirstClear ? (
+              <p className="badge-get-text">
+                <strong>{SUBJECT_LABELS[result.badgeSubject]}バッジ</strong>をゲット！
+              </p>
+            ) : (
+              <p className="badge-get-text">
+                {SUBJECT_LABELS[result.badgeSubject]}バッジは もう持っているよ。
               </p>
             )}
           </div>

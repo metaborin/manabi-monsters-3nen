@@ -295,3 +295,26 @@ Vite base（/manabi-monsters-3nen/）・PWA・Service Worker・manifest・アイ
   img→非表示フォールバック）。他のスキル素材と prepared 配下は非commit。相棒表示は既存モンスター画像を使用。
 既存のクエスト/問題/モンスター/ショップアイテムID・v0.9.0アイテム・v0.9.1ハート制・図鑑・まなび島・
 リセット・Vite base（/manabi-monsters-3nen/）・PWA・Service Worker・manifest・アイコンは変更なし。
+
+## v0.9.3
+「教科ボスクエスト」を追加。5教科それぞれに、通常クエストの後で挑む手ごわいボスと教科バッジを用意。
+- 追加ボスクエスト5（各5問・仲間モンスターなし・isBoss:true）：
+  国語 quest_boss_kokugo_kotoba_dragon（ことばドラゴン）／算数 quest_boss_sansu_warizan_golem
+  （わり算ゴーレム）／理科 quest_boss_rika_kage_maou（かげのまおう）／
+  社会 quest_boss_shakai_map_guardian（地図の番人）／英語 quest_boss_eigo_color_sphinx（カラフルスフィンクス）。
+- 追加問題25（boss_<教科>_001〜005、各 rewardCoins:4 / rewardExp:2、hint付き、小3向け）。
+  → 5問全問正解で 20コイン・10経験値（既存の問題ベース報酬をそのまま利用、報酬処理変更なし）。
+- 解放条件：同じ教科の「通常クエストを2つ以上クリア」でボス解放（BOSS_UNLOCK_NEEDED=2）。
+  ボスは通常クエストのステージ番号に含めない。未解放時は「🔒 あと○こクリアでボスにちょうせん！」表示。
+- ボスカード（BossQuestCard）：ボス画像・5問・ハート3つ・教科バッジ表示。ロック時はグレー＋🔒。
+- 教科バッジ：新しい保存キーは増やさず、「対応するボスの questId が clearedQuestIds にある」で判定。
+  結果画面に「○○バッジをゲット！」（初回）／「もう持っているよ」（再クリア）。まなび島に「🏅 教科バッジ N/5」。
+- ボスクエストは QuestScreen をそのまま利用：ハート制・アイテム（ヒント/やりなおし/ハートクッキー/
+  コインアップ）・相棒スキル・相棒ボーナス（教科一致で+3）すべて有効。失敗時は onFinish 未呼び出しで
+  報酬・経験値・バッジなし。ボスは rewardMonsterId:null なので図鑑の仲間には追加されない。
+- データ型：Quest に任意 isBoss/bossImage、QuestResult に任意 badgeSubject を追加（表示・判定用）。
+  **保存キー・保存データ構造（PlayerState）は変更なし。** モンスターデータも変更なし。
+- 画像：本番採用はボス5枚のみ public/assets/bosses/boss_*_512.png にコピー。四隅完全透過を確認。
+  prepared 配下は非commit。
+既存のクエスト/問題/モンスター/ショップアイテムID・v0.9.0〜v0.9.2の機能・図鑑・ショップ・まなび島・
+リセット・Vite base（/manabi-monsters-3nen/）・PWA・Service Worker・manifest・アイコンは変更なし。

@@ -195,8 +195,80 @@ export const QUESTS: Quest[] = [
     ],
     rewardMonsterId: 'mon_cololing',
   },
+
+  // ===== v0.9.3 追加：教科ボスクエスト（各5問・クリアで教科バッジ・仲間モンスターなし） =====
+  {
+    id: 'quest_boss_kokugo_kotoba_dragon',
+    areaId: 'area_kokugo',
+    name: 'ことばドラゴンのしれん',
+    unit: '国語ボス',
+    emoji: '🐉📖',
+    description:
+      'ことばドラゴンが しれんを出してくるよ！\nつなぎ言葉や主語・述語など、5問にちょうせん。\nクリアすると「国語バッジ」がもらえるよ。',
+    questionIds: ['boss_kokugo_001', 'boss_kokugo_002', 'boss_kokugo_003', 'boss_kokugo_004', 'boss_kokugo_005'],
+    rewardMonsterId: null,
+    isBoss: true,
+    bossImage: 'assets/bosses/boss_kokugo_kotoba_dragon_512.png',
+  },
+  {
+    id: 'quest_boss_sansu_warizan_golem',
+    areaId: 'area_sansu',
+    name: 'わり算ゴーレムのしれん',
+    unit: '算数ボス',
+    emoji: '🗿➗',
+    description:
+      'わり算ゴーレムが しれんを出してくるよ！\nわり算やかけ算など、5問にちょうせん。\nクリアすると「算数バッジ」がもらえるよ。',
+    questionIds: ['boss_sansu_001', 'boss_sansu_002', 'boss_sansu_003', 'boss_sansu_004', 'boss_sansu_005'],
+    rewardMonsterId: null,
+    isBoss: true,
+    bossImage: 'assets/bosses/boss_sansu_warizan_golem_512.png',
+  },
+  {
+    id: 'quest_boss_rika_kage_maou',
+    areaId: 'area_rika',
+    name: 'かげのまおうのしれん',
+    unit: '理科ボス',
+    emoji: '🌓👑',
+    description:
+      'かげのまおうが しれんを出してくるよ！\n太陽とかげ、植物やこん虫など、5問にちょうせん。\nクリアすると「理科バッジ」がもらえるよ。',
+    questionIds: ['boss_rika_001', 'boss_rika_002', 'boss_rika_003', 'boss_rika_004', 'boss_rika_005'],
+    rewardMonsterId: null,
+    isBoss: true,
+    bossImage: 'assets/bosses/boss_rika_kage_maou_512.png',
+  },
+  {
+    id: 'quest_boss_shakai_map_guardian',
+    areaId: 'area_shakai',
+    name: '地図の番人のしれん',
+    unit: '社会ボス',
+    emoji: '🧭🗺️',
+    description:
+      '地図の番人が しれんを出してくるよ！\n方位や地図記号、町のようすなど、5問にちょうせん。\nクリアすると「社会バッジ」がもらえるよ。',
+    questionIds: ['boss_shakai_001', 'boss_shakai_002', 'boss_shakai_003', 'boss_shakai_004', 'boss_shakai_005'],
+    rewardMonsterId: null,
+    isBoss: true,
+    bossImage: 'assets/bosses/boss_shakai_map_guardian_512.png',
+  },
+  {
+    id: 'quest_boss_eigo_color_sphinx',
+    areaId: 'area_eigo',
+    name: 'カラフルスフィンクスのしれん',
+    unit: '英語ボス',
+    emoji: '🎨🦁',
+    description:
+      'カラフルスフィンクスが しれんを出してくるよ！\n色やあいさつ、数の英語など、5問にちょうせん。\nクリアすると「英語バッジ」がもらえるよ。',
+    questionIds: ['boss_eigo_001', 'boss_eigo_002', 'boss_eigo_003', 'boss_eigo_004', 'boss_eigo_005'],
+    rewardMonsterId: null,
+    isBoss: true,
+    bossImage: 'assets/bosses/boss_eigo_color_sphinx_512.png',
+  },
 ];
 
 export function findQuestsByArea(areaId: string): Quest[] {
   return QUESTS.filter((q) => q.areaId === areaId);
+}
+
+/** すべての教科ボスクエスト（v0.9.3） */
+export function getBossQuests(): Quest[] {
+  return QUESTS.filter((q) => q.isBoss);
 }

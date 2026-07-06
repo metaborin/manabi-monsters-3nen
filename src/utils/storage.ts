@@ -37,6 +37,8 @@ export function loadPlayer(): PlayerState | null {
         : [],
       // 古い保存データには itemCounts がないので空オブジェクトとして扱う（v0.9.0）
       itemCounts: sanitizeItemCounts(data.itemCounts),
+      // 古い保存データには templeCleared がないので false 扱い（v1.0.0）
+      templeCleared: data.templeCleared === true,
     };
   } catch {
     return null;

@@ -19,6 +19,7 @@ export function useGameState() {
       clearedQuestIds: [],
       purchasedItemIds: [],
       itemCounts: {},
+      templeCleared: false,
     });
   }, []);
 
@@ -81,6 +82,14 @@ export function useGameState() {
     });
   }, []);
 
+  /** まなびの神殿をクリア済みにする（エンディングを見たとき）。v1.0.0 */
+  const markTempleCleared = useCallback(() => {
+    setPlayer((prev) => {
+      if (!prev || prev.templeCleared) return prev;
+      return { ...prev, templeCleared: true };
+    });
+  }, []);
+
   const resetGame = useCallback(() => {
     clearSave();
     setPlayer(null);
@@ -93,6 +102,7 @@ export function useGameState() {
     buyItem,
     buyConsumable,
     consumeItem,
+    markTempleCleared,
     resetGame,
   };
 }

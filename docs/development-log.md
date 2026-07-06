@@ -318,3 +318,26 @@ Vite base（/manabi-monsters-3nen/）・PWA・Service Worker・manifest・アイ
   prepared 配下は非commit。
 既存のクエスト/問題/モンスター/ショップアイテムID・v0.9.0〜v0.9.2の機能・図鑑・ショップ・まなび島・
 リセット・Vite base（/manabi-monsters-3nen/）・PWA・Service Worker・manifest・アイコンは変更なし。
+
+## v1.0.0
+最終目標「まなびのしんでん」とエンディングを追加。5教科バッジをすべて集めると神殿が開き、
+エンディング（最終クリア画面）に到達できる。
+- 解放条件：教科バッジ5個（＝5つの教科ボスを全クリア）。v0.9.3の clearedQuestIds から
+  countEarnedBadges()（quests.ts、TOTAL_SUBJECT_BADGES=getBossQuests().length）で導出。新規判定用の
+  保存値は増やさない。
+- まなび島（IslandScreen）の一番上に神殿カードを追加：
+  ・ロック（0〜4個）：閉じた神殿画像＋「きょうかバッジ N/5」＋「あと○こバッジを集めるとひらくよ！」（ボタンなし）。
+  ・解放（5個・未クリア）：開いた神殿画像＋光エフェクト＋「まなびのしんでんが ひらいたよ！」＋「🚪 しんでんに はいる」。
+  ・クリア済み：「🎉 しんでんクリアずみ！」＋「もういちど見る」。
+- エンディング画面（新規 EndingScreen、App の 'ending' 画面）：開いた神殿＋光＋お祝いバナー＋
+  5教科コンプリートバッジ＋学びのカギ＋「おめでとう！5つのきょうかを ぜんぶクリアしたよ！きみはまなびマスター！」。
+  ボタン：もういちど見る（先頭へスクロール）／まなび島にもどる。
+- クリア済み管理：最小の保存追加として PlayerState に templeCleared:boolean（後方互換・storageで
+  false 既定）。神殿に入ったとき markTempleCleared() で true。**保存キー・既存フィールドは変更なし。**
+  既に5バッジある古いsaveは、更新後すぐ神殿が解放状態になり、入ってクリア済みになる。
+- 画像：本番採用は goal 6枚のみ public/assets/goal/*_512.png にコピー（temple_closed/open・
+  badge_complete_5subjects・clear_congratulations_banner・key_of_learning・light_effect）。四隅完全透過を確認。
+  door_closed/open 等の未使用素材と prepared 配下は非commit。全画像は img→絵文字フォールバック。
+既存のクエスト/問題/モンスター/ショップアイテムID・v0.9.0〜v0.9.3の機能（通常/ボスクエスト・モンスター獲得・
+アイテム・ハート・相棒スキル・教科バッジ）・図鑑・ショップ・まなび島・リセット・Vite base
+（/manabi-monsters-3nen/）・PWA・Service Worker・manifest・アイコンは変更なし。

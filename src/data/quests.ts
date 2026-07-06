@@ -272,3 +272,11 @@ export function findQuestsByArea(areaId: string): Quest[] {
 export function getBossQuests(): Quest[] {
   return QUESTS.filter((q) => q.isBoss);
 }
+
+/** 教科バッジの合計数（＝教科ボスの数）。v1.0.0 */
+export const TOTAL_SUBJECT_BADGES = getBossQuests().length;
+
+/** 手に入れた教科バッジの数（対応する教科ボスをクリア済みかで判定）。v1.0.0 */
+export function countEarnedBadges(clearedQuestIds: string[]): number {
+  return getBossQuests().filter((q) => clearedQuestIds.includes(q.id)).length;
+}

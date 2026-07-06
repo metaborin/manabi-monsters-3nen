@@ -2168,6 +2168,208 @@ label {
   font-size: 1.1em;
 }
 
+/* ===== まなびの神殿・エンディング（v1.0.0） ===== */
+
+@keyframes temple-glow {
+  0%,
+  100% {
+    opacity: 0.55;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.95;
+    transform: scale(1.05);
+  }
+}
+
+.goal-emoji-fallback {
+  display: grid;
+  place-items: center;
+  font-size: clamp(64px, 20vw, 96px);
+}
+
+/* まなび島の神殿カード */
+.temple-card {
+  width: 100%;
+  max-width: 480px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  text-align: center;
+  border: 3px solid #b58cff;
+}
+.temple-locked {
+  border-color: #c9d2e4;
+  background: #f5f7fc;
+}
+.temple-open {
+  border-color: #ffcf5c;
+  background: linear-gradient(180deg, #fff8e4, #fff2cf);
+  box-shadow: 0 0 0 4px rgba(255, 207, 92, 0.35), 0 8px 20px rgba(200, 160, 40, 0.25);
+}
+.temple-cleared {
+  border-color: #8fdb7c;
+  background: #f4fbf1;
+}
+.temple-tag {
+  font-size: 15px;
+  font-weight: bold;
+  color: #ffffff;
+  background: linear-gradient(180deg, #b58cff, #8c5bff);
+  border-radius: 999px;
+  padding: 4px 16px;
+  box-shadow: 0 2px 6px rgba(120, 80, 200, 0.4);
+}
+.temple-media {
+  position: relative;
+  width: clamp(150px, 52vw, 216px);
+  height: clamp(150px, 52vw, 216px);
+  display: grid;
+  place-items: center;
+}
+.temple-img {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 6px 12px rgba(90, 90, 150, 0.25));
+}
+.temple-light {
+  position: absolute;
+  inset: -6%;
+  width: 112%;
+  height: 112%;
+  object-fit: contain;
+  z-index: 0;
+  pointer-events: none;
+  animation: temple-glow 2.4s ease-in-out infinite;
+}
+.temple-emoji {
+  font-size: 92px;
+  line-height: 1;
+}
+.temple-name {
+  font-size: 24px;
+  color: #6a3ea0;
+}
+.temple-open .temple-name {
+  color: #c07a0a;
+}
+.temple-badge-progress {
+  font-size: 16px;
+  font-weight: bold;
+  color: #5a6580;
+  background: #eef2fb;
+  border-radius: 999px;
+  padding: 6px 16px;
+}
+.temple-status {
+  width: 100%;
+  font-size: 16px;
+  font-weight: bold;
+  line-height: 1.5;
+  border-radius: 12px;
+  padding: 10px 12px;
+}
+.temple-status-locked {
+  color: #6a7590;
+  background: #e9edf6;
+}
+.temple-status-open {
+  color: #b5730a;
+  background: #fff3d2;
+}
+.temple-status-cleared {
+  color: #2f8b3d;
+  background: #e3f7dc;
+}
+
+/* エンディング画面 */
+.ending-hero {
+  position: relative;
+  width: clamp(200px, 70vw, 320px);
+  height: clamp(200px, 70vw, 320px);
+  display: grid;
+  place-items: center;
+}
+.ending-light {
+  position: absolute;
+  inset: -8%;
+  width: 116%;
+  height: 116%;
+  object-fit: contain;
+  z-index: 0;
+  pointer-events: none;
+  animation: temple-glow 2.4s ease-in-out infinite;
+}
+.ending-temple {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 8px 16px rgba(120, 110, 60, 0.3));
+}
+.ending-banner {
+  position: relative;
+  width: clamp(260px, 82vw, 420px);
+  aspect-ratio: 2 / 1;
+  display: grid;
+  place-items: center;
+}
+.ending-banner-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  z-index: 0;
+}
+.ending-banner-text {
+  position: relative;
+  z-index: 1;
+  font-size: clamp(24px, 7vw, 34px);
+  font-weight: 800;
+  color: #d2691e;
+  text-shadow: 0 2px 0 #ffffff;
+}
+.ending-badges {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+}
+.ending-badge {
+  width: clamp(90px, 26vw, 128px);
+  height: clamp(90px, 26vw, 128px);
+  object-fit: contain;
+  filter: drop-shadow(0 4px 8px rgba(120, 100, 40, 0.28));
+}
+.ending-key {
+  width: clamp(64px, 20vw, 96px);
+  height: clamp(64px, 20vw, 96px);
+  object-fit: contain;
+  filter: drop-shadow(0 4px 8px rgba(120, 100, 40, 0.28));
+}
+.ending-message-card {
+  width: 100%;
+  max-width: 480px;
+  text-align: center;
+}
+.ending-message {
+  font-size: 18px;
+  line-height: 1.9;
+  color: #4a5a7a;
+}
+.ending-message-strong {
+  margin-top: 10px;
+  font-size: 22px;
+  font-weight: bold;
+  color: #e0902a;
+}
+
 @keyframes slide-up {
   from {
     opacity: 0;

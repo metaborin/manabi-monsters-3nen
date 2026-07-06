@@ -12,6 +12,7 @@ import { ResultScreen } from './components/ResultScreen';
 import { MonsterDex } from './components/MonsterDex';
 import { ShopScreen } from './components/ShopScreen';
 import { IslandScreen } from './components/IslandScreen';
+import { EndingScreen } from './components/EndingScreen';
 import { EntranceOverlay } from './components/EntranceOverlay';
 
 type Screen =
@@ -22,7 +23,8 @@ type Screen =
   | 'result'
   | 'dex'
   | 'shop'
-  | 'island';
+  | 'island'
+  | 'ending';
 
 /** 入場演出の情報。target を本来の遷移先として使う。 */
 interface Transition {
@@ -42,8 +44,16 @@ const ENTRANCE_SUBTITLE: Record<Subject, string> = {
 };
 
 export default function App() {
-  const { player, startNewGame, applyQuestResult, buyItem, buyConsumable, consumeItem, resetGame } =
-    useGameState();
+  const {
+    player,
+    startNewGame,
+    applyQuestResult,
+    buyItem,
+    buyConsumable,
+    consumeItem,
+    markTempleCleared,
+    resetGame,
+  } = useGameState();
   const [screen, setScreen] = useState<Screen>('title');
   const [currentArea, setCurrentArea] = useState<Area | null>(null);
   const [currentQuest, setCurrentQuest] = useState<Quest | null>(null);
@@ -235,8 +245,16 @@ export default function App() {
         player={player}
         onBack={() => setScreen('home')}
         onOpenShop={() => setScreen('shop')}
+        onEnterTemple={() => {
+          markTempleCleared();
+          setScreen('ending');
+        }}
       />
     );
+  }
+
+  if (screen === 'ending') {
+    return <EndingScreen playerName={player.name} onBack={() => setScreen('island')} />;
   }
 
   return (

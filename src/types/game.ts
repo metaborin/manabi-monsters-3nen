@@ -83,6 +83,11 @@ export interface PlayerState {
    * 既存の飾りアイテム（purchasedItemIds）とは別管理。古い保存データでは空扱い。
    */
   itemCounts: Record<string, number>;
+  /**
+   * まなびの神殿をクリア（エンディングを見た）か。v1.0.0で追加。
+   * 古い保存データでは false 扱い。神殿の解放条件は教科バッジ5個で、これはクリア済み表示用。
+   */
+  templeCleared: boolean;
 }
 
 /** ショップで買えるアイテム */

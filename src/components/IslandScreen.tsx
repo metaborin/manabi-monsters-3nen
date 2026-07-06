@@ -1,17 +1,90 @@
+import { useState } from 'react';
 import type { PlayerState } from '../types/game';
 import { SUBJECT_LABELS } from '../types/game';
 import { MONSTERS } from '../data/monsters';
 import { SHOP_ITEMS } from '../data/shopItems';
-import { getBossQuests } from '../data/quests';
+import { getBossQuests, countEarnedBadges, TOTAL_SUBJECT_BADGES } from '../data/quests';
+import { publicAssetUrl } from '../utils/assets';
 import { MonsterImage } from './MonsterImage';
 
 interface Props {
   player: PlayerState;
   onBack: () => void;
   onOpenShop: () => void;
+  /** まなびの神殿（エンディング）に入る。v1.0.0 */
+  onEnterTemple: () => void;
 }
 
 const FLAG_ITEM_ID = 'item_manabi_flag';
+const TEMPLE_CLOSED_URL = publicAssetUrl('assets/goal/goal_manabi_temple_closed_512.png');
+const TEMPLE_OPEN_URL = publicAssetUrl('assets/goal/goal_manabi_temple_open_512.png');
+const TEMPLE_LIGHT_URL = publicAssetUrl('assets/goal/goal_light_effect_512.png');
+
+/** まなびの神殿カード（最終目標）。ロック／解放／クリア済みで表示を変える。v1.0.0 */
+function TempleCard({
+  earnedBadges,
+  cleared,
+  onEnterTemple,
+}: {
+  earnedBadges: number;
+  cleared: boolean;
+  onEnterTemple: () => void;
+}) {
+  const [imgFailed, setImgFailed] = useState(false);
+  const unlocked = earnedBadges >= TOTAL_SUBJECT_BADGES;
+  const templeUrl = unlocked ? TEMPLE_OPEN_URL : TEMPLE_CLOSED_URL;
+  const cardState = cleared ? 'temple-cleared' : unlocked ? 'temple-open' : 'temple-locked';
+
+  return (
+    <div className={`card temple-card ${cardState}`}>
+      <span className="temple-tag">⛩️ さいごの目標</span>
+      <div className="temple-media">
+        {unlocked && TEMPLE_LIGHT_URL && (
+          <img className="temple-light" src={TEMPLE_LIGHT_URL} alt="" aria-hidden="true" />
+        )}
+        {templeUrl && !imgFailed ? (
+          <img
+            className="temple-img"
+            src={templeUrl}
+            alt="まなびのしんでん"
+            decoding="async"
+            onError={() => setImgFailed(true)}
+          />
+        ) : (
+          <span className="temple-emoji" aria-hidden="true">
+            ⛩️
+          </span>
+        )}
+      </div>
+      <h3 className="temple-name">まなびのしんでん</h3>
+      <div className="temple-badge-progress">
+        🏅 きょうかバッジ {earnedBadges} / {TOTAL_SUBJECT_BADGES}
+      </div>
+
+      {cleared ? (
+        <>
+          <div className="temple-status temple-status-cleared">🎉 しんでんクリアずみ！</div>
+          <button className="btn btn-primary btn-big" onClick={onEnterTemple}>
+            🔁 エンディングをもういちど見る
+          </button>
+        </>
+      ) : unlocked ? (
+        <>
+          <div className="temple-status temple-status-open">
+            ✨ まなびのしんでんが ひらいたよ！
+          </div>
+          <button className="btn btn-primary btn-big" onClick={onEnterTemple}>
+            🚪 しんでんに はいる
+          </button>
+        </>
+      ) : (
+        <div className="temple-status temple-status-locked">
+          🔒 あと {TOTAL_SUBJECT_BADGES - earnedBadges}こバッジを集めると ひらくよ！
+        </div>
+      )}
+    </div>
+  );
+}
 
 /** にぎやか度ポイントから島のようすを表す言葉を返す */
 function livelinessLabel(points: number): string {
@@ -21,7 +94,7 @@ function livelinessLabel(points: number): string {
   return 'しずかな島';
 }
 
-export function IslandScreen({ player, onBack, onOpenShop }: Props) {
+export function IslandScreen({ player, onBack, onOpenShop, onEnterTemple }: Props) {
   const ownedMonsters = player.monsterIds.length;
   const ownedItems = player.purchasedItemIds.length;
   const liveliness = livelinessLabel(ownedMonsters + ownedItems);
@@ -31,7 +104,7 @@ export function IslandScreen({ player, onBack, onOpenShop }: Props) {
 
   // 教科バッジ（ボスクエストをクリアした数）
   const bossQuests = getBossQuests();
-  const earnedBadges = bossQuests.filter((q) => player.clearedQuestIds.includes(q.id)).length;
+  const earnedBadges = countEarnedBadges(player.clearedQuestIds);
 
   return (
     <div className="screen island-screen">
@@ -39,6 +112,13 @@ export function IslandScreen({ player, onBack, onOpenShop }: Props) {
         <h2 className="home-title">🏝️ まなび島</h2>
         <p className="home-player-name">{player.name} さんの島</p>
       </header>
+
+      {/* まなびの神殿（最終目標） */}
+      <TempleCard
+        earnedBadges={earnedBadges}
+        cleared={player.templeCleared}
+        onEnterTemple={onEnterTemple}
+      />
 
       {/* 旗の特別表示 */}
       {hasFlag ? (
